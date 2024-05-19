@@ -2,7 +2,8 @@ program BattleCity;
 
 uses
   Vcl.Forms,
-  UGameInterface in 'UGameInterface.pas' {GameInterface};
+  UGameInterface in 'UGameInterface.pas' {GameInterface},
+  UGameMap in 'UGameMap.pas';
 
 {$R *.res}
 

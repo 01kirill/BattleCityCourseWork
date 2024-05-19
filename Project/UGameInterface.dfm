@@ -2,8 +2,8 @@ object GameInterface: TGameInterface
   Left = 0
   Top = 0
   Caption = 'BattleCity'
-  ClientHeight = 840
-  ClientWidth = 1120
+  ClientHeight = 870
+  ClientWidth = 1150
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -324,7 +324,7 @@ object GameInterface: TGameInterface
   object PaddingPanelUp: TPanel
     Left = 0
     Top = 0
-    Width = 1120
+    Width = 1150
     Height = 20
     Align = alTop
     BevelOuter = bvNone
@@ -337,7 +337,7 @@ object GameInterface: TGameInterface
     Left = 0
     Top = 20
     Width = 20
-    Height = 800
+    Height = 830
     Align = alLeft
     BevelOuter = bvNone
     Color = clGray
@@ -348,8 +348,8 @@ object GameInterface: TGameInterface
   end
   object PaddingPanelBottom: TPanel
     Left = 0
-    Top = 820
-    Width = 1120
+    Top = 850
+    Width = 1150
     Height = 20
     Align = alBottom
     BevelOuter = bvNone
@@ -362,8 +362,8 @@ object GameInterface: TGameInterface
   object GameInfo: TPanel
     Left = 20
     Top = 20
-    Width = 1100
-    Height = 800
+    Width = 1130
+    Height = 830
     Align = alClient
     BevelOuter = bvNone
     Color = clGray
@@ -376,8 +376,8 @@ object GameInterface: TGameInterface
     object GameScreen: TImage
       Left = 0
       Top = 0
-      Width = 800
-      Height = 800
+      Width = 830
+      Height = 830
     end
   end
 end

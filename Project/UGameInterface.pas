@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, UGameMap;
 
 type
   TGameInterface = class(TForm)
@@ -20,9 +20,6 @@ type
 var
   GameInterface: TGameInterface;
 
-const
-  MapSize = 1040;
-
 implementation
 
 {$R *.dfm}
@@ -33,7 +30,9 @@ begin
   self.GameScreen.Canvas.Pen.Color := clBlack;
   self.GameScreen.Height := MapSize;
   self.GameScreen.Width := MapSize;
-  self.GameScreen.Canvas.Rectangle(0, 0, 1040, 1040);
+  StaticObjImgArrInit(StaticObjImg, StaticObjImgCnt);
+  DrawBackGround(MapSize);
+  LoadMapFromFile('D:\work\Delphi\BattleCityCourseWork\Project\maps\level1.txt', PxMap, ObjCnt * SubObjCnt);
 end;
 
 end.
