@@ -331,7 +331,7 @@ object GameInterface: TGameInterface
     Color = clGray
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 1034
+    ExplicitWidth = 1144
   end
   object PaddingPanelLeft: TPanel
     Left = 0
@@ -343,8 +343,7 @@ object GameInterface: TGameInterface
     Color = clGray
     ParentBackground = False
     TabOrder = 1
-    ExplicitTop = 26
-    ExplicitHeight = 619
+    ExplicitHeight = 821
   end
   object PaddingPanelBottom: TPanel
     Left = 0
@@ -356,8 +355,8 @@ object GameInterface: TGameInterface
     Color = clGray
     ParentBackground = False
     TabOrder = 2
-    ExplicitTop = 639
-    ExplicitWidth = 910
+    ExplicitTop = 841
+    ExplicitWidth = 1144
   end
   object GameInfo: TPanel
     Left = 20
@@ -369,10 +368,8 @@ object GameInterface: TGameInterface
     Color = clGray
     ParentBackground = False
     TabOrder = 3
-    ExplicitLeft = 600
-    ExplicitTop = 288
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitWidth = 1124
+    ExplicitHeight = 821
     object GameScreen: TImage
       Left = 0
       Top = 0

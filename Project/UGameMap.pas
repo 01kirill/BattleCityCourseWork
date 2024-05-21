@@ -3,7 +3,7 @@ unit UGameMap;
 interface
 
 uses
-  Vcl.Graphics;
+  Vcl.Graphics, Vcl.ExtCtrls;
 
 const
   MapSize = 1040;
@@ -16,13 +16,13 @@ const
 type
   TPxMap = array [0 .. MapSize - 1, 0 .. MapSize - 1] of integer;
   TMapFileMtx = array [1 .. ObjCnt * SubObjCnt] of string;
-  TStaticObjImgArr = array [1 .. StaticObjImgCnt] of TBitMap;
+  TStaticObjImgArr = array [0 .. StaticObjImgCnt] of TBitMap;
 
-procedure DrawBackGround(MapSize: integer);
+procedure DrawBackGround(Screen: TImage; MapSize: integer);
 
 procedure StaticObjImgArrInit(var StaticObjImg: TStaticObjImgArr; n: integer);
 
-procedure LoadMapFromFile(path: string; var PxMap: TPxMap; n: integer);
+procedure LoadMapFromFile(Screen: TImage; path: string; var PxMap: TPxMap; StaticObjImg: TStaticObjImgArr; n, len: integer);
 
 var
   PxMap: TPxMap;
@@ -33,10 +33,10 @@ implementation
 uses
   UGameInterface;
 
-procedure DrawBackGround(MapSize: integer);
+procedure DrawBackGround(Screen: TImage; MapSize: integer);
 
 begin
-  GameInterface.GameScreen.Canvas.Rectangle(0, 0, MapSize, MapSize);
+  Screen.Canvas.Rectangle(0, 0, MapSize, MapSize);
 end;
 
 procedure StaticObjImgArrInit(var StaticObjImg: TStaticObjImgArr; n: integer);
@@ -45,8 +45,9 @@ var
   i: integer;
 
 begin
-  for i := 1 to n do
+  for i := 0 to n do
     StaticObjImg[i] := TBitMap.Create;
+  StaticObjImg[0] := nil;
   StaticObjImg[1].LoadFromFile
     ('D:\work\Delphi\BattleCityCourseWork\Project\icons\StaticObjects\brick.bmp');
   StaticObjImg[2].LoadFromFile
@@ -63,12 +64,12 @@ begin
     ('D:\work\Delphi\BattleCityCourseWork\Project\icons\StaticObjects\water.bmp');
 end;
 
-procedure LoadMapFromFile(path: string; var PxMap: TPxMap; n: integer);
+procedure LoadMapFromFile(Screen: TImage; path: string; var PxMap: TPxMap; StaticObjImg: TStaticObjImgArr; n, len: integer);
 
 var
   MapFile: TextFile;
   MapFileMtx: TMapFileMtx;
-  i, j: integer;
+  i, j, id, k, l: integer;
   MapImgToDraw: TBitMap;
 
 begin
@@ -77,30 +78,34 @@ begin
   for i := 1 to n do
     readln(MapFile, MapFileMtx[i]);
   CloseFile(MapFile);
-  MapImgToDraw := TBitMap.Create;
+  id := 0;
   for i := 1 to n do
     for j := 1 to n do
     begin
       case MapFileMtx[j][i] of
         'b':
-          MapImgToDraw := StaticObjImg[1];
+          id := 1;
         'd':
-          MapImgToDraw := StaticObjImg[2];
+          id := 2;
         'e':
-          MapImgToDraw := StaticObjImg[3];
+          id := 3;
         'f':
-          MapImgToDraw := StaticObjImg[4];
+          id := 4;
         'i':
-          MapImgToDraw := StaticObjImg[5];
+          id := 5;
         's':
-          MapImgToDraw := StaticObjImg[6];
+          id := 6;
         'w':
-          MapImgToDraw := StaticObjImg[7];
+          id := 7;
         'z':
-          MapImgToDraw := nil;
+          id := 0;
       end;
-      GameInterface.GameScreen.Canvas.Draw((i - 1) * SubObjLen,
-        (j - 1) * SubObjLen, MapImgToDraw);
+      MapImgToDraw := StaticObjImg[id];
+      Screen.Canvas.Draw((i - 1) * Len,
+        (j - 1) * Len, MapImgToDraw);
+      for k := (j - 1) * len to (j - 1) * len + len - 1 do
+        for l := (i  -1) * len to (i - 1) * len + len - 1 do
+          PxMap[k][l] := id;
     end;
 end;
 

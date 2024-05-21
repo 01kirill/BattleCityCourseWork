@@ -30,9 +30,12 @@ begin
   self.GameScreen.Canvas.Pen.Color := clBlack;
   self.GameScreen.Height := MapSize;
   self.GameScreen.Width := MapSize;
+
   StaticObjImgArrInit(StaticObjImg, StaticObjImgCnt);
-  DrawBackGround(MapSize);
-  LoadMapFromFile('D:\work\Delphi\BattleCityCourseWork\Project\maps\level1.txt', PxMap, ObjCnt * SubObjCnt);
+  DrawBackGround(GameInterface.GameScreen, MapSize);
+  LoadMapFromFile(GameInterface.GameScreen,
+    'D:\work\Delphi\BattleCityCourseWork\Project\maps\level1.txt', PxMap,
+    StaticObjImg, ObjCnt * SubObjCnt, SubObjLen);
 end;
 
 end.
