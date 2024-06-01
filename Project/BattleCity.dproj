@@ -103,6 +103,8 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UGameMap.pas"/>
+        <DCCReference Include="UTTankType.pas"/>
+        <DCCReference Include="UShellType.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

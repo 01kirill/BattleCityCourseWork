@@ -320,6 +320,7 @@ object GameInterface: TGameInterface
     FE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00}
   Position = poDesigned
   OnActivate = FormActivate
+  OnKeyDown = FormKeyDown
   TextHeight = 15
   object PaddingPanelUp: TPanel
     Left = 0
@@ -376,5 +377,27 @@ object GameInterface: TGameInterface
       Width = 830
       Height = 830
     end
+  end
+  object PlayerTankMovement: TTimer
+    OnTimer = PlayerTankMovementTimer
+    Left = 852
+    Top = 20
+  end
+  object PlayerShellMovement: TTimer
+    OnTimer = PlayerShellMovementTimer
+    Left = 852
+    Top = 76
+  end
+  object DeleteExpSmall1: TTimer
+    Interval = 200
+    OnTimer = DeleteExpSmall1Timer
+    Left = 852
+    Top = 140
+  end
+  object DeleteExpSmall2: TTimer
+    Interval = 200
+    OnTimer = DeleteExpSmall2Timer
+    Left = 852
+    Top = 204
   end
 end
