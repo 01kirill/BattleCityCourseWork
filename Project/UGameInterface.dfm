@@ -379,25 +379,228 @@ object GameInterface: TGameInterface
     end
   end
   object PlayerTankMovement: TTimer
+    Interval = 1
     OnTimer = PlayerTankMovementTimer
-    Left = 852
+    Left = 20
     Top = 20
   end
   object PlayerShellMovement: TTimer
+    Enabled = False
+    Interval = 15
     OnTimer = PlayerShellMovementTimer
-    Left = 852
+    Left = 52
+    Top = 20
+  end
+  object DeleteExpSmallPlayer1: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallPlayer1Timer
+    Left = 84
+    Top = 20
+  end
+  object DeleteExpSmallPlayer2: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallPlayer2Timer
+    Left = 116
+    Top = 20
+  end
+  object DeleteExpBigBase: TTimer
+    Enabled = False
+    Interval = 200
+    OnTimer = DeleteExpBigBaseTimer
+    Left = 820
+    Top = 20
+  end
+  object EnemyTank1Movement: TTimer
+    Interval = 1
+    OnTimer = EnemyTank1MovementTimer
+    Left = 20
     Top = 76
   end
-  object DeleteExpSmall1: TTimer
-    Interval = 200
-    OnTimer = DeleteExpSmall1Timer
-    Left = 852
-    Top = 140
+  object EnemyTank1SetDirection: TTimer
+    Interval = 800
+    OnTimer = EnemyTank1SetDirectionTimer
+    Left = 212
+    Top = 76
   end
-  object DeleteExpSmall2: TTimer
-    Interval = 200
-    OnTimer = DeleteExpSmall2Timer
-    Left = 852
-    Top = 204
+  object EnemyTank2Movement: TTimer
+    Interval = 1
+    OnTimer = EnemyTank2MovementTimer
+    Left = 20
+    Top = 132
+  end
+  object EnemyTank2SetDirection: TTimer
+    Interval = 800
+    OnTimer = EnemyTank2SetDirectionTimer
+    Left = 212
+    Top = 132
+  end
+  object EnemyTank3Movement: TTimer
+    Interval = 1
+    OnTimer = EnemyTank3MovementTimer
+    Left = 20
+    Top = 188
+  end
+  object EnemyTank4Movement: TTimer
+    Interval = 1
+    OnTimer = EnemyTank4MovementTimer
+    Left = 20
+    Top = 244
+  end
+  object EnemyTank3SetDirection: TTimer
+    Interval = 800
+    OnTimer = EnemyTank3SetDirectionTimer
+    Left = 212
+    Top = 188
+  end
+  object EnemyTank4SetDirection: TTimer
+    Interval = 800
+    OnTimer = EnemyTank4SetDirectionTimer
+    Left = 212
+    Top = 244
+  end
+  object DeleteExpBigPlayer: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpBigPlayerTimer
+    Left = 180
+    Top = 20
+  end
+  object DeleteExpBigEnemy1: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpBigEnemy1Timer
+    Left = 180
+    Top = 76
+  end
+  object DeleteExpBigEnemy2: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpBigEnemy2Timer
+    Left = 180
+    Top = 132
+  end
+  object DeleteExpBigEnemy3: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpBigEnemy3Timer
+    Left = 180
+    Top = 188
+  end
+  object DeleteExpBigEnemy4: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpBigEnemy4Timer
+    Left = 180
+    Top = 244
+  end
+  object Enemy1ShellMovement: TTimer
+    Enabled = False
+    Interval = 15
+    OnTimer = Enemy1ShellMovementTimer
+    Left = 52
+    Top = 76
+  end
+  object DeleteExpSmallEnemy11: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallEnemy11Timer
+    Left = 84
+    Top = 76
+  end
+  object DeleteExpSmallEnemy12: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallEnemy12Timer
+    Left = 116
+    Top = 76
+  end
+  object Enemy2ShellMovement: TTimer
+    Enabled = False
+    Interval = 15
+    OnTimer = Enemy2ShellMovementTimer
+    Left = 52
+    Top = 132
+  end
+  object DeleteExpSmallEnemy21: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallEnemy21Timer
+    Left = 84
+    Top = 132
+  end
+  object DeleteExpSmallEnemy22: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallEnemy22Timer
+    Left = 116
+    Top = 132
+  end
+  object Enemy3ShellMovement: TTimer
+    Enabled = False
+    Interval = 15
+    OnTimer = Enemy3ShellMovementTimer
+    Left = 52
+    Top = 188
+  end
+  object DeleteExpSmallEnemy31: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallEnemy31Timer
+    Left = 84
+    Top = 188
+  end
+  object DeleteExpSmallEnemy32: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallEnemy32Timer
+    Left = 116
+    Top = 188
+  end
+  object Enemy4ShellMovement: TTimer
+    Enabled = False
+    Interval = 15
+    OnTimer = Enemy4ShellMovementTimer
+    Left = 52
+    Top = 244
+  end
+  object DeleteExpSmallEnemy41: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallEnemy41Timer
+    Left = 84
+    Top = 244
+  end
+  object DeleteExpSmallEnemy42: TTimer
+    Enabled = False
+    Interval = 60
+    OnTimer = DeleteExpSmallEnemy42Timer
+    Left = 116
+    Top = 244
+  end
+  object Enemy1Shoot: TTimer
+    Interval = 600
+    OnTimer = Enemy1ShootTimer
+    Left = 244
+    Top = 76
+  end
+  object Enemy2Shoot: TTimer
+    Interval = 600
+    OnTimer = Enemy2ShootTimer
+    Left = 244
+    Top = 132
+  end
+  object Enemy3Shoot: TTimer
+    Interval = 600
+    OnTimer = Enemy3ShootTimer
+    Left = 244
+    Top = 188
+  end
+  object Enemy4Shoot: TTimer
+    Interval = 600
+    OnTimer = Enemy4ShootTimer
+    Left = 244
+    Top = 244
   end
 end

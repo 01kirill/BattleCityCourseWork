@@ -105,6 +105,8 @@
         <DCCReference Include="UGameMap.pas"/>
         <DCCReference Include="UTTankType.pas"/>
         <DCCReference Include="UShellType.pas"/>
+        <DCCReference Include="UEnemyTanks.pas"/>
+        <DCCReference Include="UEnemyShells.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -23,7 +23,9 @@ type
   TTank = class
     direction: integer;
     DP: TDimPntArr;
-    isShotMade: boolean;
+    lives: integer;
+    isShotMade, isDestroyed: boolean;
+
     constructor Create(X, Y: integer);
     procedure PlayerMove(key: integer; screen: TImage);
     procedure PlayerShoot(key: integer);
@@ -38,7 +40,7 @@ var
 implementation
 
 uses
-  UGameInterface, UGameMap, UShellType;
+  UGameInterface, UGameMap, UShellType, UEnemyTanks, UEnemyShells;
 
 procedure PlayerTankImgArrInit();
 
@@ -56,8 +58,13 @@ end;
 
 constructor TTank.Create(X: integer; Y: integer);
 
+var
+  i, j: integer;
+
 begin
   self.direction := 0;
+  self.lives := 3;
+  self.isDestroyed := false;
   self.isShotMade := false;
   self.DP[0].X := X;
   self.DP[0].Y := Y;
@@ -67,6 +74,9 @@ begin
   self.DP[2].Y := Y + TankSize - 1;
   self.DP[3].X := X + TankSize - 1;
   self.DP[3].Y := Y + TankSize - 1;
+  for i := self.DP[0].Y to self.DP[3].Y do
+    for j := self.DP[0].X to self.DP[3].X do
+      TankPxMap[i][j] := -10;
 end;
 
 procedure TTank.PlayerMove(key: integer; screen: TImage);
@@ -108,15 +118,34 @@ procedure TTank.PlayerMove(key: integer; screen: TImage);
     result := res;
   end;
 
+  function CheckEnemyTank(Id: integer): boolean;
+
+  var
+    res: boolean;
+
+  begin
+    res := false;
+    case Id of
+      - 1, -2, -3, -4:
+        res := false;
+      0:
+        res := true;
+    end;
+    result := res;
+  end;
+
 var
-  isAbleToMove1, isAbleToMove2, isKeyPressed: boolean;
-  i, X, Y: integer;
-  PntToMov1, PntToMov2: TCoords;
-  isOnIce: boolean;
+  isAbleToMove1, isAbleToMove2, isAbleToMove3, isKeyPressed: boolean;
+  i, k, l: integer;
+  PntToMov1, PntToMov2, PntToMov3: TCoords;
 
 begin
+  isAbleToMove3 := false;
   screen.Canvas.Rectangle(self.DP[0].X, self.DP[0].Y, self.DP[3].X + 1,
     self.DP[3].Y + 1);
+  for k := self.DP[0].Y to self.DP[3].Y do
+    for l := self.DP[0].X to self.DP[3].X do
+      TankPxMap[k][l] := 0;
   isKeyPressed := true;
   case key of
     38, 87:
@@ -143,6 +172,8 @@ begin
             PntToMov2 := self.DP[1];
             dec(PntToMov1.Y);
             dec(PntToMov2.Y);
+            PntToMov3.X := PntToMov1.X + TankSize div 2 - 1;
+            PntToMov3.Y := PntToMov1.Y;
           end;
         1:
           begin
@@ -150,6 +181,8 @@ begin
             PntToMov2 := self.DP[3];
             inc(PntToMov1.X);
             inc(PntToMov2.X);
+            PntToMov3.X := PntToMov1.X;
+            PntToMov3.Y := PntToMov1.Y + TankSize div 2 - 1;
           end;
         2:
           begin
@@ -157,6 +190,8 @@ begin
             PntToMov2 := self.DP[3];
             inc(PntToMov1.Y);
             inc(PntToMov2.Y);
+            PntToMov3.X := PntToMov1.X + TankSize div 2 - 1;
+            PntToMov3.Y := PntToMov1.Y;
           end;
         3:
           begin
@@ -164,62 +199,45 @@ begin
             PntToMov2 := self.DP[2];
             dec(PntToMov1.X);
             dec(PntToMov2.X);
+            PntToMov3.X := PntToMov1.X;
+            PntToMov3.Y := PntToMov1.Y + TankSize div 2 - 1;
           end;
       end;
       isAbleToMove1 := CheckObjId(PxMap[PntToMov1.Y][PntToMov1.X]);
       isAbleToMove2 := CheckObjId(PxMap[PntToMov2.Y][PntToMov2.X]);
+      isAbleToMove3 := CheckObjId(PxMap[PntToMov3.Y][PntToMov3.X]);
     end;
-    if isAbleToMove1 and isAbleToMove2 then
-      for i := 0 to DimPntCnt - 1 do
-        case self.direction of
-          0:
-            dec(self.DP[i].Y, TankSpeed);
-          1:
-            inc(self.DP[i].X, TankSpeed);
-          2:
-            inc(self.DP[i].Y, TankSpeed);
-          3:
-            dec(self.DP[i].X, TankSpeed);
-        end;
+    if isAbleToMove1 and isAbleToMove2 and isAbletoMove3 then
+    begin
+      isAbleToMove1 := CheckEnemyTank(TankPxMap[PntToMov1.Y][PntToMov1.X]);
+      isAbleToMove2 := CheckEnemyTank(TankPxMap[PntToMov2.Y][PntToMov2.X]);
+      if isAbleToMove1 and isAbleToMove2 then
+        for i := 0 to DimPntCnt - 1 do
+          case self.direction of
+            0:
+              dec(self.DP[i].Y, TankSpeed);
+            1:
+              inc(self.DP[i].X, TankSpeed);
+            2:
+              inc(self.DP[i].Y, TankSpeed);
+            3:
+              dec(self.DP[i].X, TankSpeed);
+          end;
+    end;
   end;
+  for k := self.DP[0].Y to self.DP[3].Y do
+    for l := self.DP[0].X to self.DP[3].X do
+      TankPxMap[k][l] := -10;
   if not self.isShotMade then
   begin
-    for i := 0 to length(IceObj) - 1 do
-      screen.Canvas.Draw(IceObj[i].X, IceObj[i].Y, StaticObjImg[5]);
     for i := 0 to length(WaterObj) - 1 do
       screen.Canvas.Draw(WaterObj[i].X, WaterObj[i].Y, StaticObjImg[7]);
   end;
-  isOnIce := false;
-  Y := self.DP[0].Y;
-  X := 0;
-  while Y < self.DP[3].Y do
-  begin
-    X := self.DP[0].X;
-    while X < self.DP[3].X do
-    begin
-      if PxMap[Y][X] = 5 then
-        isOnIce := true;
-      inc(X, 40);
-    end;
-    dec(X);
-    if PxMap[Y][X] = 5 then
-      isOnIce := true;
-    inc(Y, 40);
-  end;
-  dec(X);
-  dec(Y);
-  if PxMap[Y][X] = 5 then
-    isOnIce := true;
-  if isOnIce then
-    GameInterface.PlayerTankMovement.Interval := 100
-  else
-    GameInterface.PlayerTankMovement.Interval := 1;
   screen.Canvas.Draw(self.DP[0].X, self.DP[0].Y, PlayerTankImg[self.direction]);
   for i := 0 to length(ForestObj) - 1 do
     screen.Canvas.Draw(ForestObj[i].X, ForestObj[i].Y, StaticObjImg[4]);
   for i := 0 to length(SteelObj) - 1 do
     screen.Canvas.Draw(SteelObj[i].X, SteelObj[i].Y, StaticObjImg[6]);
-
 end;
 
 procedure TTank.PlayerShoot(key: integer);
@@ -237,7 +255,6 @@ begin
     begin
       PlayerShell := TShell.Create(self.direction, self.DP[0].X, self.DP[0].Y);
       GameInterface.PlayerShellMovement.Enabled := true;
-      GameInterface.PlayerShellMovement.Interval := 15;
     end;
   end
 end;

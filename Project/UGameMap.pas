@@ -12,6 +12,8 @@ const
   ObjCnt = 13;
   SubObjCnt = 2;
   StaticObjImgCnt = 7;
+  LineBase = 24;
+  ColumnBase = 12;
 
 type
   TCoords = record
@@ -19,10 +21,10 @@ type
   end;
 
   TForestObjArr = array of TCoords;
-  TIceObjArr = array of TCoords;
   TWaterObjArr = array of TCoords;
   TSteelObjArr = array of TCoords;
 
+  TTankPxMap = array [0 .. MapSize - 1, 0 .. MapSize - 1] of integer;
   TPxMap = array [0 .. MapSize - 1, 0 .. MapSize - 1] of integer;
   TMapFileMtx = array [1 .. ObjCnt * SubObjCnt] of string;
   TStaticObjImgArr = array [0 .. StaticObjImgCnt] of TBitMap;
@@ -35,17 +37,17 @@ procedure LoadMapFromFile(Screen: TImage; path: string);
 
 var
   PxMap: TPxMap;
+  TankPxMap: TTankPxMap;
   MapFileMtx: TMapFileMtx;
   StaticObjImg: TStaticObjImgArr;
   ForestObj: TForestObjArr;
-  IceObj: TIceObjArr;
   WaterObj: TWaterObjArr;
   SteelObj: TSteelObjArr;
 
 implementation
 
 uses
-  UGameInterface, UTTankType;
+  UGameInterface, UTTankType, UShellType, UEnemyTanks, UEnemyShells;
 
 procedure DrawBackGround(Screen: TImage);
 
@@ -69,16 +71,21 @@ begin
   StaticObjImg[5].LoadFromFile('..\icons\StaticObjects\ice.bmp');
   StaticObjImg[6].LoadFromFile('..\icons\StaticObjects\steel.bmp');
   StaticObjImg[7].LoadFromFile('..\icons\StaticObjects\water.bmp');
+  SetLength(ForestObj, 0);
+  SetLength(WaterObj, 0);
+  SetLength(SteelObj, 0);
 end;
 
 procedure LoadMapFromFile(Screen: TImage; path: string);
 
 var
   MapFile: TextFile;
-  i, j, id, k, l: integer;
+  i, j, id, k, l, posX, posY: integer;
   MapImgToDraw: TBitMap;
 
 begin
+  posX := -1;
+  posY := -1;
   AssignFile(MapFile, path);
   Reset(MapFile);
   for i := 1 to ObjCnt * SubObjCnt do
@@ -96,11 +103,13 @@ begin
         'd':
           id := 2;
         'e':
-          id := 3;
+          begin
+            id := 3;
+            posX := i;
+            posY := j;
+          end;
         'f':
           id := 4;
-        'i':
-          id := 5;
         's':
           id := 6;
         'w':
@@ -119,12 +128,6 @@ begin
             ForestObj[length(ForestObj) - 1].X := (i - 1) * SubObjLen;
             ForestObj[length(ForestObj) - 1].Y := (j - 1) * SubObjLen;
           end;
-        'i':
-          begin
-            SetLength(IceObj, length(IceObj) + 1);
-            IceObj[length(IceObj) - 1].X := (i - 1) * SubObjLen;
-            IceObj[length(IceObj) - 1].Y := (j - 1) * SubObjLen;
-          end;
         'w':
           begin
             SetLength(WaterObj, length(WaterObj) + 1);
@@ -139,6 +142,10 @@ begin
           end;
       end;
     end;
+  for i := (posX - 1) * SubObjLen to (posX - 1) * SubObjLen + ObjLen - 1 do
+    for j := (posY - 1) * SubObjLen to (posY - 1) * SubObjLen + ObjLen - 1 do
+      PxMap[j][i] := 3;
+
 end;
 
 end.
