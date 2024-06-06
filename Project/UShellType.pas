@@ -145,35 +145,35 @@ begin
   isAbleToMove1 := CheckBorder(self.direction);
   isAbleToMove2 := CheckBorder(self.direction);
   case self.direction of
-      2:
-        begin
-          PntToMov1 := self.DP[0];
-          PntToMov2 := self.DP[1];
-          dec(PntToMov1.Y);
-          dec(PntToMov2.Y);
-        end;
-      3:
-        begin
-          PntToMov1 := self.DP[1];
-          PntToMov2 := self.DP[3];
-          inc(PntToMov1.X);
-          inc(PntToMov2.X);
-        end;
-      0:
-        begin
-          PntToMov1 := self.DP[2];
-          PntToMov2 := self.DP[3];
-          inc(PntToMov1.Y);
-          inc(PntToMov2.Y);
-        end;
-      1:
-        begin
-          PntToMov1 := self.DP[0];
-          PntToMov2 := self.DP[2];
-          dec(PntToMov1.X);
-          dec(PntToMov2.X);
-        end;
-    end;
+    2:
+      begin
+        PntToMov1 := self.DP[0];
+        PntToMov2 := self.DP[1];
+        dec(PntToMov1.Y);
+        dec(PntToMov2.Y);
+      end;
+    3:
+      begin
+        PntToMov1 := self.DP[1];
+        PntToMov2 := self.DP[3];
+        inc(PntToMov1.X);
+        inc(PntToMov2.X);
+      end;
+    0:
+      begin
+        PntToMov1 := self.DP[2];
+        PntToMov2 := self.DP[3];
+        inc(PntToMov1.Y);
+        inc(PntToMov2.Y);
+      end;
+    1:
+      begin
+        PntToMov1 := self.DP[0];
+        PntToMov2 := self.DP[2];
+        dec(PntToMov1.X);
+        dec(PntToMov2.X);
+      end;
+  end;
   if isAbleToMove1 and isAbleToMove2 then
   begin
 
@@ -206,7 +206,6 @@ begin
       begin
         if not isAbleToMove1 then
         begin
-
           case TankPxMap[PntToMov1.Y][PntToMov1.X] of
             - 1:
               begin
@@ -214,12 +213,12 @@ begin
                 gameInterface.Enemy1Shoot.Enabled := false;
                 gameInterface.EnemyTank1SetDirection.Enabled := false;
                 Enemytanks[1].isDestroyed := true;
-                GameInterface.Enemy1Respawn.Enabled := true;
-                screen.Canvas.Draw(EnemyTanks[1].DP[0].X,
-                  EnemyTanks[1].DP[0].Y, ExpBig);
+                gameInterface.Enemy1Respawn.Enabled := true;
+                screen.Canvas.Draw(Enemytanks[1].DP[0].X,
+                  Enemytanks[1].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy1.Enabled := true;
-                for k := EnemyTanks[1].DP[0].X to EnemyTanks[1].DP[3].X do
-                  for l := EnemyTanks[1].DP[0].Y to EnemyTanks[1].DP[3].Y do
+                for k := Enemytanks[1].DP[0].X to Enemytanks[1].DP[3].X do
+                  for l := Enemytanks[1].DP[0].Y to Enemytanks[1].DP[3].Y do
                     TankPxMap[l][k] := 0;
               end;
             -2:
@@ -228,12 +227,12 @@ begin
                 gameInterface.Enemy2Shoot.Enabled := false;
                 gameInterface.EnemyTank2SetDirection.Enabled := false;
                 Enemytanks[2].isDestroyed := true;
-                GameInterface.Enemy2Respawn.Enabled := true;
-                screen.Canvas.Draw(EnemyTanks[2].DP[0].X,
-                  EnemyTanks[2].DP[0].Y, ExpBig);
+                gameInterface.Enemy2Respawn.Enabled := true;
+                screen.Canvas.Draw(Enemytanks[2].DP[0].X,
+                  Enemytanks[2].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy2.Enabled := true;
-                for k := EnemyTanks[2].DP[0].X to EnemyTanks[2].DP[3].X do
-                  for l := EnemyTanks[2].DP[0].Y to EnemyTanks[2].DP[3].Y do
+                for k := Enemytanks[2].DP[0].X to Enemytanks[2].DP[3].X do
+                  for l := Enemytanks[2].DP[0].Y to Enemytanks[2].DP[3].Y do
                     TankPxMap[l][k] := 0;
               end;
             -3:
@@ -242,12 +241,12 @@ begin
                 gameInterface.Enemy3Shoot.Enabled := false;
                 gameInterface.EnemyTank3SetDirection.Enabled := false;
                 Enemytanks[3].isDestroyed := true;
-                GameInterface.Enemy3Respawn.Enabled := true;
-                screen.Canvas.Draw(EnemyTanks[3].DP[0].X,
-                  EnemyTanks[3].DP[0].Y, ExpBig);
+                gameInterface.Enemy3Respawn.Enabled := true;
+                screen.Canvas.Draw(Enemytanks[3].DP[0].X,
+                  Enemytanks[3].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy3.Enabled := true;
-                for k := EnemyTanks[3].DP[0].X to EnemyTanks[2].DP[3].X do
-                  for l := EnemyTanks[3].DP[0].Y to EnemyTanks[2].DP[3].Y do
+                for k := Enemytanks[3].DP[0].X to Enemytanks[2].DP[3].X do
+                  for l := Enemytanks[3].DP[0].Y to Enemytanks[2].DP[3].Y do
                     TankPxMap[l][k] := 0;
               end;
             -4:
@@ -255,13 +254,13 @@ begin
                 gameInterface.EnemyTank4Movement.Enabled := false;
                 gameInterface.Enemy4Shoot.Enabled := false;
                 gameInterface.EnemyTank4SetDirection.Enabled := false;
-                GameInterface.Enemy4Respawn.Enabled := true;
+                gameInterface.Enemy4Respawn.Enabled := true;
                 Enemytanks[4].isDestroyed := true;
-                screen.Canvas.Draw(EnemyTanks[4].DP[0].X,
-                  EnemyTanks[4].DP[0].Y, ExpBig);
+                screen.Canvas.Draw(Enemytanks[4].DP[0].X,
+                  Enemytanks[4].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy4.Enabled := true;
-                for k := EnemyTanks[4].DP[0].X to EnemyTanks[4].DP[3].X do
-                  for l := EnemyTanks[4].DP[0].Y to EnemyTanks[4].DP[3].Y do
+                for k := Enemytanks[4].DP[0].X to Enemytanks[4].DP[3].X do
+                  for l := Enemytanks[4].DP[0].Y to Enemytanks[4].DP[3].Y do
                     TankPxMap[l][k] := 0;
               end;
           end;
@@ -275,12 +274,12 @@ begin
                 gameInterface.Enemy1Shoot.Enabled := false;
                 gameInterface.EnemyTank1SetDirection.Enabled := false;
                 Enemytanks[1].isDestroyed := true;
-                GameInterface.Enemy1Respawn.Enabled := true;
-                screen.Canvas.Draw(EnemyTanks[1].DP[0].X,
-                  EnemyTanks[1].DP[0].Y, ExpBig);
+                gameInterface.Enemy1Respawn.Enabled := true;
+                screen.Canvas.Draw(Enemytanks[1].DP[0].X,
+                  Enemytanks[1].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy1.Enabled := true;
-                for k := EnemyTanks[1].DP[0].X to EnemyTanks[1].DP[3].X do
-                  for l := EnemyTanks[1].DP[0].Y to EnemyTanks[1].DP[3].Y do
+                for k := Enemytanks[1].DP[0].X to Enemytanks[1].DP[3].X do
+                  for l := Enemytanks[1].DP[0].Y to Enemytanks[1].DP[3].Y do
                     TankPxMap[l][k] := 0;
               end;
             -2:
@@ -289,12 +288,12 @@ begin
                 gameInterface.Enemy2Shoot.Enabled := false;
                 gameInterface.EnemyTank2SetDirection.Enabled := false;
                 Enemytanks[2].isDestroyed := true;
-                GameInterface.Enemy2Respawn.Enabled := true;
-                screen.Canvas.Draw(EnemyTanks[2].DP[0].X,
-                  EnemyTanks[2].DP[0].Y, ExpBig);
+                gameInterface.Enemy2Respawn.Enabled := true;
+                screen.Canvas.Draw(Enemytanks[2].DP[0].X,
+                  Enemytanks[2].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy2.Enabled := true;
-                for k := EnemyTanks[2].DP[0].X to EnemyTanks[2].DP[3].X do
-                  for l := EnemyTanks[2].DP[0].Y to EnemyTanks[2].DP[3].Y do
+                for k := Enemytanks[2].DP[0].X to Enemytanks[2].DP[3].X do
+                  for l := Enemytanks[2].DP[0].Y to Enemytanks[2].DP[3].Y do
                     TankPxMap[l][k] := 0;
               end;
             -3:
@@ -303,12 +302,12 @@ begin
                 gameInterface.Enemy3Shoot.Enabled := false;
                 gameInterface.EnemyTank3SetDirection.Enabled := false;
                 Enemytanks[3].isDestroyed := true;
-                GameInterface.Enemy3Respawn.Enabled := true;
-                screen.Canvas.Draw(EnemyTanks[3].DP[0].X,
-                  EnemyTanks[3].DP[0].Y, ExpBig);
+                gameInterface.Enemy3Respawn.Enabled := true;
+                screen.Canvas.Draw(Enemytanks[3].DP[0].X,
+                  Enemytanks[3].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy3.Enabled := true;
-                for k := EnemyTanks[3].DP[0].X to EnemyTanks[3].DP[3].X do
-                  for l := EnemyTanks[3].DP[0].Y to EnemyTanks[3].DP[3].Y do
+                for k := Enemytanks[3].DP[0].X to Enemytanks[3].DP[3].X do
+                  for l := Enemytanks[3].DP[0].Y to Enemytanks[3].DP[3].Y do
                     TankPxMap[l][k] := 0;
               end;
             -4:
@@ -317,12 +316,12 @@ begin
                 gameInterface.Enemy4Shoot.Enabled := false;
                 gameInterface.EnemyTank4SetDirection.Enabled := false;
                 Enemytanks[4].isDestroyed := true;
-                GameInterface.Enemy4Respawn.Enabled := true;
-                screen.Canvas.Draw(EnemyTanks[4].DP[0].X,
-                  EnemyTanks[4].DP[0].Y, ExpBig);
+                gameInterface.Enemy4Respawn.Enabled := true;
+                screen.Canvas.Draw(Enemytanks[4].DP[0].X,
+                  Enemytanks[4].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy4.Enabled := true;
-                for k := EnemyTanks[4].DP[0].X to EnemyTanks[4].DP[3].X do
-                  for l := EnemyTanks[4].DP[0].Y to EnemyTanks[4].DP[3].Y do
+                for k := Enemytanks[4].DP[0].X to Enemytanks[4].DP[3].X do
+                  for l := Enemytanks[4].DP[0].Y to Enemytanks[4].DP[3].Y do
                     TankPxMap[l][k] := 0;
               end;
           end;

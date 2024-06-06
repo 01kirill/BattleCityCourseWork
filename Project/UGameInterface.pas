@@ -207,12 +207,12 @@ begin
   Enemy2Respawn.Enabled := false;
   Enemy3Respawn.Enabled := false;
   Enemy4Respawn.Enabled := false;
-  PlayerTank.Destroy;
+  if PlayerTank <> nil then
+    PlayerTank.Destroy;
   for i := 1 to 4 do
   begin
-    EnemyTanks[i].Destroy;
-    if EnemyShells[i] <> nil then
-      EnemyShells[i].Destroy;
+    if EnemyTanks[i] <> nil then
+      EnemyTanks[i].Destroy;
   end;
   SetLength(waterObj, 0);
   SetLength(steelObj, 0);
@@ -271,16 +271,16 @@ begin
     EnemyCoordsSpawn[3].Y, 3);
   EnemyTanks[4] := TEnemyTank.Create(EnemyCoordsSpawn[4].X,
     EnemyCoordsSpawn[4].Y, 4);
-  PlayerShell := TShell.Create(PlayerTank.direction, PlayerTank.DP[0].X,
+   PlayerShell := TShell.Create(PlayerTank.direction, PlayerTank.DP[0].X,
     PlayerTank.DP[0].Y);
-  { EnemyShells[1] := TEnemyShell.Create(EnemyTanks[1].direction,
+   EnemyShells[1] := TEnemyShell.Create(EnemyTanks[1].direction,
     EnemyTanks[1].DP[0].X, EnemyTanks[1].DP[0].Y);
     EnemyShells[2] := TEnemyShell.Create(EnemyTanks[2].direction,
     EnemyTanks[2].DP[0].X, EnemyTanks[2].DP[0].Y);
     EnemyShells[3] := TEnemyShell.Create(EnemyTanks[3].direction,
     EnemyTanks[3].DP[0].X, EnemyTanks[3].DP[0].Y);
     EnemyShells[4] := TEnemyShell.Create(EnemyTanks[4].direction,
-    EnemyTanks[4].DP[0].X, EnemyTanks[4].DP[0].Y); }
+    EnemyTanks[4].DP[0].X, EnemyTanks[4].DP[0].Y);
 
   DrawBackGround(GameInterface.GameScreen);
   LoadMapFromFile(GameInterface.GameScreen, path);
@@ -307,6 +307,9 @@ end;
 
 procedure TGameInterface.EndGame(Sender: TObject; win: boolean);
 
+var
+  i: integer;
+
 begin
   self.UpdateInfoPanel.Enabled := false;
   self.PlayerTankMovement.Enabled := false;
@@ -327,6 +330,17 @@ begin
   self.EnemyTank4SetDirection.Enabled := false;
   self.Enemy4ShellMovement.Enabled := false;
   self.Enemy4Shoot.Enabled := false;
+  if PlayerTank <> nil then
+    PlayerTank.Destroy;
+  if PlayerShell <> nil then
+    PlayerShell.Destroy;
+  for i := 1 to 4 do
+  begin
+    if EnemyTanks[i] <> nil then
+      EnemyTanks[i].Destroy;
+    if EnemyShells[i] <> nil then
+      EnemyShells[i].Destroy;
+  end;
   if win then
   begin
     inc(currentLevel);

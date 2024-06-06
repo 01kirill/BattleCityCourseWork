@@ -211,10 +211,10 @@ begin
             GameInterface.PlayerTankMovement.Enabled := false;
             PlayerTank.isDestroyed := true;
             GameInterface.PlayerRespawn.Enabled := true;
-            screen.Canvas.Draw(playerTank.DP[0].X, playerTank.DP[0].Y, ExpBig);
+            screen.Canvas.Draw(PlayerTank.DP[0].X, PlayerTank.DP[0].Y, ExpBig);
             GameInterface.DeleteExpBigPlayer.Enabled := true;
-            for k := playerTank.DP[0].X to playerTank.DP[3].X do
-              for l := playerTank.DP[0].Y to playerTank.DP[3].Y do
+            for k := PlayerTank.DP[0].X to PlayerTank.DP[3].X do
+              for l := PlayerTank.DP[0].Y to PlayerTank.DP[3].Y do
                 TankPxMap[l][k] := 0;
             EnemyTanks[num].isShotMade := false;
           end;
@@ -236,10 +236,10 @@ begin
             GameInterface.PlayerTankMovement.Enabled := false;
             PlayerTank.isDestroyed := true;
             GameInterface.PlayerRespawn.Enabled := true;
-            screen.Canvas.Draw(playerTank.DP[0].X, playerTank.DP[0].Y, ExpBig);
+            screen.Canvas.Draw(PlayerTank.DP[0].X, PlayerTank.DP[0].Y, ExpBig);
             GameInterface.DeleteExpBigPlayer.Enabled := true;
-            for k := playerTank.DP[0].X to playerTank.DP[3].X do
-              for l := playerTank.DP[0].Y to playerTank.DP[3].Y do
+            for k := PlayerTank.DP[0].X to PlayerTank.DP[3].X do
+              for l := PlayerTank.DP[0].Y to PlayerTank.DP[3].Y do
                 TankPxMap[l][k] := 0;
             EnemyTanks[num].isShotMade := false;
           end;
@@ -288,6 +288,7 @@ begin
           4:
             GameInterface.Enemy4ShellMovement.Enabled := false;
         end;
+
         EnemyTanks[num].isShotMade := false;
       end;
       if not isAbleToMove2 then
