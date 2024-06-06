@@ -152,7 +152,7 @@ begin
   ExpImgInit();
 
   EnemyTankNum := 1;
-  currentLevel := 4;
+  currentLevel := 1;
   PlayerScore := 0;
 
   path := '..\maps\level' + IntToStr(currentLevel) + '.txt';
@@ -163,6 +163,9 @@ begin
 end;
 
 procedure TGameInterface.FormClose(Sender: TObject; var Action: TCloseAction);
+
+var
+  i: integer;
 
 begin
   PlayerTankMovement.Enabled := false;
@@ -204,6 +207,9 @@ begin
   Enemy2Respawn.Enabled := false;
   Enemy3Respawn.Enabled := false;
   Enemy4Respawn.Enabled := false;
+  PlayerShell.direction := -1;
+  for i := 1 to 4 do
+    EnemyShells[i].direction := -1;
   SetLength(waterObj, 0);
   SetLength(steelObj, 0);
   SetLength(forestObj, 0);
@@ -282,7 +288,7 @@ begin
 
   lives[0] := 3;
   for i := 1 to 4 do
-    lives[i] := 1;
+    lives[i] := 5;
 end;
 
 procedure TGameInterface.EndGame(Sender: TObject; win: boolean);
