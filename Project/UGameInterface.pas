@@ -6,8 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, UGameMap, UTTankType,
-  UShellType, UEnemyTanks, UEnemyShells,
-  System.Actions, Vcl.ActnList;
+  UShellType, UEnemyTanks, UEnemyShells, UMainMenu,
+  System.Actions, Vcl.ActnList, Vcl.StdCtrls;
 
 type
   TGameInterface = class(TForm)
@@ -50,9 +50,29 @@ type
     Enemy2Shoot: TTimer;
     Enemy3Shoot: TTimer;
     Enemy4Shoot: TTimer;
+    PlayerRespawn: TTimer;
+    Enemy1Respawn: TTimer;
+    Enemy2Respawn: TTimer;
+    Enemy3Respawn: TTimer;
+    Enemy4Respawn: TTimer;
+    EnemyLivesDespription: TLabel;
+    EnemyLives: TLabel;
+    UpdateInfoPanel: TTimer;
+    PlayerLivesDescription: TLabel;
+    PlayerLives: TLabel;
+    GameCompleted: TLabel;
+    CurrentLevelDescription: TLabel;
+    CurrentlevelInfo: TLabel;
+    LevelInit: TTimer;
+    PlayerNameDescription: TLabel;
+    ScoreDescription: TLabel;
+    PlayerName: TLabel;
+    Score: TLabel;
+    WinLabel: TLabel;
+    procedure EndGame(Sender: TObject; win: boolean);
+    procedure StartLevel(Sender: TObject; path: string);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure PlayerTankMovementTimer(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
     procedure PlayerShellMovementTimer(Sender: TObject);
     procedure DeleteExpSmallPlayer1Timer(Sender: TObject);
     procedure DeleteExpSmallPlayer2Timer(Sender: TObject);
@@ -86,6 +106,15 @@ type
     procedure Enemy2ShootTimer(Sender: TObject);
     procedure Enemy3ShootTimer(Sender: TObject);
     procedure Enemy4ShootTimer(Sender: TObject);
+    procedure PlayerRespawnTimer(Sender: TObject);
+    procedure Enemy1RespawnTimer(Sender: TObject);
+    procedure Enemy2RespawnTimer(Sender: TObject);
+    procedure Enemy3RespawnTimer(Sender: TObject);
+    procedure Enemy4RespawnTimer(Sender: TObject);
+    procedure UpdateInfoPanelTimer(Sender: TObject);
+    procedure LevelInitTimer(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   end;
 
   TParam = record
@@ -94,21 +123,187 @@ type
 
   TDeletePlayerArr = array [1 .. 4] of TParam;
   TEnemyArr = array [1 .. 4] of TDeletePlayerArr;
+  TLivesArr = array [0 .. 4] of integer;
 
 var
   GameInterface: TGameInterface;
   DeletePlayer: TDeletePlayerArr;
   DeleteEnemy: TEnemyArr;
-  pressedKeyCode, kBase, EnemyTankNum: integer;
+  path: string;
+  pressedKeyCode, kBase, EnemyTankNum, currentLevel, PlayerScore: integer;
+  lives: TLivesArr;
+  pause: boolean;
 
 implementation
 
 {$R *.dfm}
 
+procedure TGameInterface.FormActivate(Sender: TObject);
+begin
+  randomize;
+
+  self.GameScreen.Canvas.Brush.Color := clblack;
+  self.GameScreen.Canvas.Pen.Color := clblack;
+  self.GameScreen.Height := MapSize;
+  self.GameScreen.Width := MapSize;
+
+  StaticObjImgArrInit(staticobjimg);
+  PlayerTankImgArrInit();
+  EnemyTankImgArrInit();
+  ExpImgInit();
+
+  EnemyTankNum := 1;
+  currentLevel := 1;
+  PlayerScore := 0;
+
+  pause := false;
+
+  path := '..\maps\level' + IntToStr(currentLevel) + '.txt';
+  GameScreen.Canvas.Rectangle(0, 0, MapSize, MapSize);
+  self.GameCompleted.Caption := 'Уровень ' + IntToStr(currentLevel);
+  self.GameCompleted.Visible := true;
+  self.LevelInit.Enabled := true;
+end;
+
+procedure TGameInterface.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  GameInterface.Hide;
+  MainMenu.Show;
+end;
+
 procedure TGameInterface.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   pressedKeyCode := Key;
+end;
+
+procedure TGameInterface.LevelInitTimer(Sender: TObject);
+begin
+  StartLevel(Sender, path);
+  self.GameCompleted.Visible := false;
+  self.LevelInit.Enabled := false;
+end;
+
+procedure TGameInterface.UpdateInfoPanelTimer(Sender: TObject);
+
+var
+  i, sum: integer;
+  Show: string;
+
+begin
+  sum := 0;
+  for i := 1 to 4 do
+    sum := sum + lives[i];
+  Show := IntToStr(sum);
+  if sum = 0 then
+    EndGame(Sender, true);
+  self.EnemyLives.Caption := Show;
+  Show := IntToStr(lives[0]);
+  self.PlayerLives.Caption := Show;
+  Show := IntToStr(currentLevel);
+  self.CurrentlevelInfo.Caption := Show;
+
+  Show := IntToStr(PlayerScore);
+  self.Score.Caption := Show;
+end;
+
+procedure TGameInterface.StartLevel(Sender: TObject; path: string);
+
+begin
+  PlayerTank := TTank.Create(320, 960);
+  EnemyTanks[1] := TEnemyTank.Create(EnemyCoordsSpawn[1].X,
+    EnemyCoordsSpawn[1].Y, 1);
+  EnemyTanks[2] := TEnemyTank.Create(EnemyCoordsSpawn[2].X,
+    EnemyCoordsSpawn[2].Y, 2);
+  EnemyTanks[3] := TEnemyTank.Create(EnemyCoordsSpawn[3].X,
+    EnemyCoordsSpawn[3].Y, 3);
+  EnemyTanks[4] := TEnemyTank.Create(EnemyCoordsSpawn[4].X,
+    EnemyCoordsSpawn[4].Y, 4);
+  PlayerShell := TShell.Create(PlayerTank.direction, PlayerTank.DP[0].X,
+    PlayerTank.DP[0].Y);
+  EnemyShells[1] := TEnemyShell.Create(EnemyTanks[1].direction,
+    EnemyTanks[1].DP[0].X, EnemyTanks[1].DP[0].Y);
+  EnemyShells[2] := TEnemyShell.Create(EnemyTanks[2].direction,
+    EnemyTanks[2].DP[0].X, EnemyTanks[2].DP[0].Y);
+  EnemyShells[3] := TEnemyShell.Create(EnemyTanks[3].direction,
+    EnemyTanks[3].DP[0].X, EnemyTanks[3].DP[0].Y);
+  EnemyShells[4] := TEnemyShell.Create(EnemyTanks[4].direction,
+    EnemyTanks[4].DP[0].X, EnemyTanks[4].DP[0].Y);
+
+  DrawBackGround(GameInterface.GameScreen);
+  LoadMapFromFile(GameInterface.GameScreen, path);
+
+  self.UpdateInfoPanel.Enabled := true;
+  self.PlayerTankMovement.Enabled := true;
+  self.EnemyTank1Movement.Enabled := true;
+  self.EnemyTank1SetDirection.Enabled := true;
+  self.Enemy1Shoot.Enabled := true;
+  self.EnemyTank2Movement.Enabled := true;
+  self.EnemyTank2SetDirection.Enabled := true;
+  self.Enemy2Shoot.Enabled := true;
+  self.EnemyTank3Movement.Enabled := true;
+  self.EnemyTank3SetDirection.Enabled := true;
+  self.Enemy3Shoot.Enabled := true;
+  self.EnemyTank4Movement.Enabled := true;
+  self.EnemyTank4SetDirection.Enabled := true;
+  self.Enemy4Shoot.Enabled := true;
+
+  lives[0] := 3;
+  for var i := 1 to 4 do
+    lives[i] := 5;
+end;
+
+procedure TGameInterface.EndGame(Sender: TObject; win: boolean);
+
+begin
+  self.UpdateInfoPanel.Enabled := false;
+  self.PlayerTankMovement.Enabled := false;
+  self.PlayerShellMovement.Enabled := false;
+  self.EnemyTank1Movement.Enabled := false;
+  self.EnemyTank1SetDirection.Enabled := false;
+  self.Enemy1ShellMovement.Enabled := false;
+  self.Enemy1Shoot.Enabled := false;
+  self.EnemyTank2Movement.Enabled := false;
+  self.EnemyTank2SetDirection.Enabled := false;
+  self.Enemy2ShellMovement.Enabled := false;
+  self.Enemy2Shoot.Enabled := false;
+  self.EnemyTank3Movement.Enabled := false;
+  self.EnemyTank3SetDirection.Enabled := false;
+  self.Enemy3ShellMovement.Enabled := false;
+  self.Enemy3Shoot.Enabled := false;
+  self.EnemyTank4Movement.Enabled := false;
+  self.EnemyTank4SetDirection.Enabled := false;
+  self.Enemy4ShellMovement.Enabled := false;
+  self.Enemy4Shoot.Enabled := false;
+  if win then
+  begin
+    inc(currentLevel);
+    if currentLevel = 3 then
+    begin
+      inc(PlayerScore, 5000);
+      GameScreen.Canvas.Rectangle(0, 0, MapSize, MapSize);
+      self.WinLabel.Caption := 'Спасибо за прохождение игры!';
+      self.WinLabel.Visible := true;
+    end
+    else
+    begin
+      SetLength(waterObj, 0);
+      SetLength(forestObj, 0);
+      SetLength(steelObj, 0);
+      path := '..\maps\level' + IntToStr(currentLevel) + '.txt';
+      GameScreen.Canvas.Rectangle(0, 0, MapSize, MapSize);
+      self.GameCompleted.Caption := 'Уровень ' + IntToStr(currentLevel);
+      inc(PlayerScore, 1000);
+      self.GameCompleted.Visible := true;
+      self.LevelInit.Enabled := true;
+    end;
+  end
+  else
+  begin
+    GameScreen.Canvas.Rectangle(0, 0, MapSize, MapSize);
+    self.WinLabel.Caption := 'Повезет в следующий раз...';
+    self.WinLabel.Visible := true;
+  end;
 end;
 
 /// //////
@@ -122,24 +317,7 @@ begin
     GameScreen.Canvas.Draw(ColumnBase * subobjlen, LineBase * subobjlen,
       staticobjimg[2]);
     self.DeleteExpBigBase.Enabled := false;
-    self.PlayerTankMovement.Enabled := false;
-    self.PlayerShellMovement.Enabled := false;
-    self.EnemyTank1Movement.Enabled := false;
-    self.EnemyTank1SetDirection.Enabled := false;
-    self.Enemy1ShellMovement.Enabled := false;
-    self.Enemy1Shoot.Enabled := false;
-    self.EnemyTank2Movement.Enabled := false;
-    self.EnemyTank2SetDirection.Enabled := false;
-    self.Enemy2ShellMovement.Enabled := false;
-    self.Enemy2Shoot.Enabled := false;
-    self.EnemyTank3Movement.Enabled := false;
-    self.EnemyTank3SetDirection.Enabled := false;
-    self.Enemy3ShellMovement.Enabled := false;
-    self.Enemy3Shoot.Enabled := false;
-    self.EnemyTank4Movement.Enabled := false;
-    self.EnemyTank4SetDirection.Enabled := false;
-    self.Enemy4ShellMovement.Enabled := false;
-    self.Enemy4Shoot.Enabled := false;
+    EndGame(Sender, false);
   end
   else
     inc(kBase);
@@ -151,6 +329,22 @@ begin
   PlayerTank.PlayerMove(pressedKeyCode, GameInterface.GameScreen);
   PlayerTank.PlayerShoot(pressedKeyCode);
   pressedKeyCode := -100;
+end;
+
+procedure TGameInterface.PlayerRespawnTimer(Sender: TObject);
+begin
+  if PlayerTank.isDestroyed and (lives[0] > 0) then
+  begin
+    dec(lives[0]);
+    if lives[0] > 0 then
+    begin
+      PlayerTank := TTank.Create(320, 960);
+      self.PlayerTankMovement.Enabled := true;
+      self.PlayerRespawn.Enabled := false;
+    end
+    else
+      EndGame(Sender, false);
+  end;
 end;
 
 procedure TGameInterface.PlayerShellMovementTimer(Sender: TObject);
@@ -211,6 +405,25 @@ procedure TGameInterface.EnemyTank1MovementTimer(Sender: TObject);
 
 begin
   EnemyTanks[1].EnemyMove(GameInterface.GameScreen);
+end;
+
+procedure TGameInterface.Enemy1RespawnTimer(Sender: TObject);
+begin
+  if EnemyTanks[1].isDestroyed and (lives[1] > 0) then
+  begin
+    inc(PlayerScore, 100);
+    dec(lives[1]);
+    if lives[1] > 0 then
+    begin
+      EnemyTanks[1] := TEnemyTank.Create(EnemyCoordsSpawn[1].X,
+        EnemyCoordsSpawn[1].Y, 1);
+      GameInterface.EnemyTank1Movement.Enabled := true;
+      GameInterface.Enemy1Shoot.Enabled := true;
+      GameInterface.EnemyTank1SetDirection.Enabled := true;
+      EnemyTanks[1].isDestroyed := false;
+      self.Enemy1Respawn.Enabled := false;
+    end
+  end;
 end;
 
 procedure TGameInterface.Enemy1ShellMovementTimer(Sender: TObject);
@@ -276,6 +489,25 @@ begin
   EnemyTanks[2].direction := random(4);
 end;
 
+procedure TGameInterface.Enemy2RespawnTimer(Sender: TObject);
+begin
+  if EnemyTanks[2].isDestroyed and (lives[2] > 0) then
+  begin
+    inc(PlayerScore, 100);
+    dec(lives[2]);
+    if lives[2] > 0 then
+    begin
+      EnemyTanks[2] := TEnemyTank.Create(EnemyCoordsSpawn[2].X,
+        EnemyCoordsSpawn[2].Y, 2);
+      GameInterface.EnemyTank2Movement.Enabled := true;
+      GameInterface.Enemy2Shoot.Enabled := true;
+      GameInterface.EnemyTank2SetDirection.Enabled := true;
+      EnemyTanks[2].isDestroyed := false;
+      self.Enemy2Respawn.Enabled := false;
+    end
+  end;
+end;
+
 procedure TGameInterface.Enemy2ShellMovementTimer(Sender: TObject);
 begin
   EnemyShells[2].EnemyShellMove(GameInterface.GameScreen, 2);
@@ -336,6 +568,25 @@ end;
 procedure TGameInterface.EnemyTank3SetDirectionTimer(Sender: TObject);
 begin
   EnemyTanks[3].direction := random(4);
+end;
+
+procedure TGameInterface.Enemy3RespawnTimer(Sender: TObject);
+begin
+  if EnemyTanks[3].isDestroyed and (lives[3] > 0) then
+  begin
+    inc(PlayerScore, 100);
+    dec(lives[3]);
+    if lives[3] > 0 then
+    begin
+      EnemyTanks[3] := TEnemyTank.Create(EnemyCoordsSpawn[3].X,
+        EnemyCoordsSpawn[3].Y, 3);
+      GameInterface.EnemyTank3Movement.Enabled := true;
+      GameInterface.Enemy3Shoot.Enabled := true;
+      GameInterface.EnemyTank3SetDirection.Enabled := true;
+      EnemyTanks[3].isDestroyed := false;
+      self.Enemy3Respawn.Enabled := false;
+    end
+  end;
 end;
 
 procedure TGameInterface.Enemy3ShellMovementTimer(Sender: TObject);
@@ -400,6 +651,25 @@ begin
   EnemyTanks[4].direction := random(4);
 end;
 
+procedure TGameInterface.Enemy4RespawnTimer(Sender: TObject);
+begin
+  if EnemyTanks[4].isDestroyed and (lives[4] > 0) then
+  begin
+    inc(PlayerScore, 100);
+    dec(lives[4]);
+    if lives[4] > 0 then
+    begin
+      EnemyTanks[4] := TEnemyTank.Create(EnemyCoordsSpawn[4].X,
+        EnemyCoordsSpawn[4].Y, 4);
+      GameInterface.EnemyTank4Movement.Enabled := true;
+      GameInterface.Enemy4Shoot.Enabled := true;
+      GameInterface.EnemyTank4SetDirection.Enabled := true;
+      EnemyTanks[4].isDestroyed := false;
+      self.Enemy4Respawn.Enabled := false;
+    end
+  end;
+end;
+
 procedure TGameInterface.Enemy4ShellMovementTimer(Sender: TObject);
 begin
   EnemyShells[4].EnemyShellMove(GameInterface.GameScreen, 4);
@@ -452,35 +722,5 @@ begin
 end;
 
 /// ///////////
-
-procedure TGameInterface.FormActivate(Sender: TObject);
-begin
-  randomize;
-
-  self.GameScreen.Canvas.Brush.Color := clBlack;
-  self.GameScreen.Canvas.Pen.Color := clBlack;
-  self.GameScreen.Height := MapSize;
-  self.GameScreen.Width := MapSize;
-
-  StaticObjImgArrInit(staticobjimg);
-  PlayerTankImgArrInit();
-  EnemyTankImgArrInit();
-  ExpImgInit();
-
-  EnemyTankNum := 1;
-
-  DrawBackGround(GameInterface.GameScreen);
-  LoadMapFromFile(GameInterface.GameScreen, '..\maps\level1.txt');
-
-  PlayerTank := TTank.Create(320, 960);
-  EnemyTanks[1] := TEnemyTank.Create(EnemyCoordsSpawn[1].X,
-    EnemyCoordsSpawn[1].Y, 1);
-  EnemyTanks[2] := TEnemyTank.Create(EnemyCoordsSpawn[2].X,
-    EnemyCoordsSpawn[2].Y, 2);
-  EnemyTanks[3] := TEnemyTank.Create(EnemyCoordsSpawn[3].X,
-    EnemyCoordsSpawn[3].Y, 3);
-  EnemyTanks[4] := TEnemyTank.Create(EnemyCoordsSpawn[4].X,
-    EnemyCoordsSpawn[4].Y, 4);
-end;
 
 end.

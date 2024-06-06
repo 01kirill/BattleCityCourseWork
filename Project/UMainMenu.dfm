@@ -1,11 +1,11 @@
-object GameInterface: TGameInterface
-  Left = 0
-  Top = 0
+object MainMenu: TMainMenu
+  Left = 342
+  Top = 247
+  BorderStyle = bsSingle
   Caption = 'BattleCity'
-  ClientHeight = 870
-  ClientWidth = 1150
+  ClientHeight = 643
+  ClientWidth = 907
   Color = clBtnFace
-  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -319,512 +319,76 @@ object GameInterface: TGameInterface
     FFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFF
     FE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00}
   Position = poDesigned
-  OnActivate = FormActivate
-  OnClose = FormClose
-  OnKeyDown = FormKeyDown
   TextHeight = 15
-  object PaddingPanelUp: TPanel
+  object MenuPanel: TPanel
     Left = 0
     Top = 0
-    Width = 1150
-    Height = 20
-    Align = alTop
-    BevelOuter = bvNone
-    Color = clGray
-    ParentBackground = False
-    TabOrder = 0
-    ExplicitWidth = 1144
-  end
-  object PaddingPanelLeft: TPanel
-    Left = 0
-    Top = 20
-    Width = 20
-    Height = 830
-    Align = alLeft
-    BevelOuter = bvNone
-    Color = clGray
-    ParentBackground = False
-    TabOrder = 1
-    ExplicitHeight = 821
-  end
-  object PaddingPanelBottom: TPanel
-    Left = 0
-    Top = 850
-    Width = 1150
-    Height = 20
-    Align = alBottom
-    BevelOuter = bvNone
-    Color = clGray
-    ParentBackground = False
-    TabOrder = 2
-    ExplicitTop = 841
-    ExplicitWidth = 1144
-  end
-  object GameInfo: TPanel
-    Left = 20
-    Top = 20
-    Width = 1130
-    Height = 830
+    Width = 907
+    Height = 643
     Align = alClient
     BevelOuter = bvNone
-    Color = clGray
+    Color = clBackground
     ParentBackground = False
-    TabOrder = 3
-    ExplicitWidth = 1124
-    ExplicitHeight = 821
-    object GameScreen: TImage
-      Left = 0
-      Top = 0
-      Width = 830
-      Height = 830
+    TabOrder = 0
+    ExplicitLeft = 128
+    ExplicitTop = -40
+    object CaptionPanel: TPanel
+      Left = 16
+      Top = 24
+      Width = 881
+      Height = 97
+      BevelOuter = bvNone
+      Color = clBlack
+      ParentBackground = False
+      TabOrder = 0
+      object GameName: TLabel
+        Left = 0
+        Top = 0
+        Width = 881
+        Height = 97
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'BattleCity Remake(developed by KZ)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clYellow
+        Font.Height = -50
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ExplicitTop = 1
+        ExplicitWidth = 848
+        ExplicitHeight = 95
+      end
     end
-    object EnemyLivesDespription: TLabel
-      Left = 836
-      Top = 0
-      Width = 228
-      Height = 30
-      Caption = #1046#1080#1079#1085#1080' '#1087#1088#1086#1090#1080#1074#1085#1080#1082#1086#1074':'
-      Color = clGray
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
+    object StartGameButton: TPanel
+      Left = 216
+      Top = 160
+      Width = 473
+      Height = 73
+      BevelOuter = bvNone
+      Color = clBackground
+      ParentBackground = False
+      TabOrder = 1
+      object StartGameCaption: TLabel
+        Left = 0
+        Top = 0
+        Width = 473
+        Height = 73
+        Align = alClient
+        Alignment = taCenter
+        Caption = #1053#1072#1095#1072#1090#1100' '#1080#1075#1088#1091
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clYellow
+        Font.Height = -50
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        OnClick = StartGameCaptionClick
+        ExplicitLeft = -31
+        ExplicitTop = 49
+        ExplicitWidth = 471
+        ExplicitHeight = 71
+      end
     end
-    object EnemyLives: TLabel
-      Left = 1080
-      Top = 0
-      Width = 26
-      Height = 30
-      Caption = '12'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object PlayerLivesDescription: TLabel
-      Left = 836
-      Top = 36
-      Width = 160
-      Height = 30
-      Caption = #1046#1080#1079#1085#1080' '#1080#1075#1088#1086#1082#1072':'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object PlayerLives: TLabel
-      Left = 1010
-      Top = 36
-      Width = 13
-      Height = 30
-      Caption = '1'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object GameCompleted: TLabel
-      Left = 330
-      Top = 389
-      Width = 209
-      Height = 57
-      Alignment = taCenter
-      Caption = #1059#1088#1086#1074#1077#1085#1100' 1'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -42
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-      Visible = False
-    end
-    object CurrentLevelDescription: TLabel
-      Left = 836
-      Top = 72
-      Width = 196
-      Height = 30
-      Caption = #1058#1077#1082#1091#1097#1080#1081' '#1091#1088#1086#1074#1077#1085#1100':'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object CurrentlevelInfo: TLabel
-      Left = 1048
-      Top = 72
-      Width = 22
-      Height = 30
-      Caption = '-1'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object PlayerNameDescription: TLabel
-      Left = 836
-      Top = 108
-      Width = 72
-      Height = 30
-      Caption = #1048#1075#1088#1086#1082':'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object ScoreDescription: TLabel
-      Left = 836
-      Top = 144
-      Width = 55
-      Height = 30
-      Caption = #1057#1095#1077#1090':'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object PlayerName: TLabel
-      Left = 928
-      Top = 108
-      Width = 57
-      Height = 30
-      Caption = 'user1'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object Score: TLabel
-      Left = 904
-      Top = 144
-      Width = 52
-      Height = 30
-      Caption = '1000'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -22
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object WinLabel: TLabel
-      Left = 120
-      Top = 389
-      Width = 156
-      Height = 57
-      Caption = #1055#1086#1073#1077#1076#1072
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -42
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-      Visible = False
-    end
-  end
-  object PlayerTankMovement: TTimer
-    Enabled = False
-    Interval = 1
-    OnTimer = PlayerTankMovementTimer
-    Left = 20
-    Top = 20
-  end
-  object PlayerShellMovement: TTimer
-    Enabled = False
-    Interval = 15
-    OnTimer = PlayerShellMovementTimer
-    Left = 52
-    Top = 20
-  end
-  object DeleteExpSmallPlayer1: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallPlayer1Timer
-    Left = 84
-    Top = 20
-  end
-  object DeleteExpSmallPlayer2: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallPlayer2Timer
-    Left = 116
-    Top = 20
-  end
-  object DeleteExpBigBase: TTimer
-    Enabled = False
-    Interval = 200
-    OnTimer = DeleteExpBigBaseTimer
-    Left = 448
-    Top = 20
-  end
-  object EnemyTank1Movement: TTimer
-    Enabled = False
-    Interval = 1
-    OnTimer = EnemyTank1MovementTimer
-    Left = 20
-    Top = 76
-  end
-  object EnemyTank1SetDirection: TTimer
-    Enabled = False
-    Interval = 800
-    OnTimer = EnemyTank1SetDirectionTimer
-    Left = 212
-    Top = 76
-  end
-  object EnemyTank2Movement: TTimer
-    Enabled = False
-    Interval = 1
-    OnTimer = EnemyTank2MovementTimer
-    Left = 20
-    Top = 132
-  end
-  object EnemyTank2SetDirection: TTimer
-    Enabled = False
-    Interval = 800
-    OnTimer = EnemyTank2SetDirectionTimer
-    Left = 212
-    Top = 132
-  end
-  object EnemyTank3Movement: TTimer
-    Enabled = False
-    Interval = 1
-    OnTimer = EnemyTank3MovementTimer
-    Left = 20
-    Top = 188
-  end
-  object EnemyTank4Movement: TTimer
-    Enabled = False
-    Interval = 1
-    OnTimer = EnemyTank4MovementTimer
-    Left = 20
-    Top = 244
-  end
-  object EnemyTank3SetDirection: TTimer
-    Enabled = False
-    Interval = 800
-    OnTimer = EnemyTank3SetDirectionTimer
-    Left = 212
-    Top = 188
-  end
-  object EnemyTank4SetDirection: TTimer
-    Enabled = False
-    Interval = 800
-    OnTimer = EnemyTank4SetDirectionTimer
-    Left = 212
-    Top = 244
-  end
-  object DeleteExpBigPlayer: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpBigPlayerTimer
-    Left = 180
-    Top = 20
-  end
-  object DeleteExpBigEnemy1: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpBigEnemy1Timer
-    Left = 180
-    Top = 76
-  end
-  object DeleteExpBigEnemy2: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpBigEnemy2Timer
-    Left = 180
-    Top = 132
-  end
-  object DeleteExpBigEnemy3: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpBigEnemy3Timer
-    Left = 180
-    Top = 188
-  end
-  object DeleteExpBigEnemy4: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpBigEnemy4Timer
-    Left = 180
-    Top = 244
-  end
-  object Enemy1ShellMovement: TTimer
-    Enabled = False
-    Interval = 15
-    OnTimer = Enemy1ShellMovementTimer
-    Left = 52
-    Top = 76
-  end
-  object DeleteExpSmallEnemy11: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallEnemy11Timer
-    Left = 84
-    Top = 76
-  end
-  object DeleteExpSmallEnemy12: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallEnemy12Timer
-    Left = 116
-    Top = 76
-  end
-  object Enemy2ShellMovement: TTimer
-    Enabled = False
-    Interval = 15
-    OnTimer = Enemy2ShellMovementTimer
-    Left = 52
-    Top = 132
-  end
-  object DeleteExpSmallEnemy21: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallEnemy21Timer
-    Left = 84
-    Top = 132
-  end
-  object DeleteExpSmallEnemy22: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallEnemy22Timer
-    Left = 116
-    Top = 132
-  end
-  object Enemy3ShellMovement: TTimer
-    Enabled = False
-    Interval = 15
-    OnTimer = Enemy3ShellMovementTimer
-    Left = 52
-    Top = 188
-  end
-  object DeleteExpSmallEnemy31: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallEnemy31Timer
-    Left = 84
-    Top = 188
-  end
-  object DeleteExpSmallEnemy32: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallEnemy32Timer
-    Left = 116
-    Top = 188
-  end
-  object Enemy4ShellMovement: TTimer
-    Enabled = False
-    Interval = 15
-    OnTimer = Enemy4ShellMovementTimer
-    Left = 52
-    Top = 244
-  end
-  object DeleteExpSmallEnemy41: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallEnemy41Timer
-    Left = 84
-    Top = 244
-  end
-  object DeleteExpSmallEnemy42: TTimer
-    Enabled = False
-    Interval = 60
-    OnTimer = DeleteExpSmallEnemy42Timer
-    Left = 116
-    Top = 244
-  end
-  object Enemy1Shoot: TTimer
-    Enabled = False
-    Interval = 600
-    OnTimer = Enemy1ShootTimer
-    Left = 244
-    Top = 76
-  end
-  object Enemy2Shoot: TTimer
-    Enabled = False
-    Interval = 600
-    OnTimer = Enemy2ShootTimer
-    Left = 244
-    Top = 132
-  end
-  object Enemy3Shoot: TTimer
-    Enabled = False
-    Interval = 600
-    OnTimer = Enemy3ShootTimer
-    Left = 244
-    Top = 188
-  end
-  object Enemy4Shoot: TTimer
-    Enabled = False
-    Interval = 600
-    OnTimer = Enemy4ShootTimer
-    Left = 244
-    Top = 244
-  end
-  object PlayerRespawn: TTimer
-    Enabled = False
-    Interval = 3000
-    OnTimer = PlayerRespawnTimer
-    Left = 300
-    Top = 20
-  end
-  object Enemy1Respawn: TTimer
-    Enabled = False
-    Interval = 3000
-    OnTimer = Enemy1RespawnTimer
-    Left = 300
-    Top = 76
-  end
-  object Enemy2Respawn: TTimer
-    Enabled = False
-    Interval = 3000
-    OnTimer = Enemy2RespawnTimer
-    Left = 300
-    Top = 132
-  end
-  object Enemy3Respawn: TTimer
-    Enabled = False
-    Interval = 3000
-    OnTimer = Enemy3RespawnTimer
-    Left = 300
-    Top = 188
-  end
-  object Enemy4Respawn: TTimer
-    Enabled = False
-    Interval = 3000
-    OnTimer = Enemy4RespawnTimer
-    Left = 300
-    Top = 244
-  end
-  object UpdateInfoPanel: TTimer
-    Enabled = False
-    Interval = 100
-    OnTimer = UpdateInfoPanelTimer
-    Left = 444
-    Top = 76
-  end
-  object LevelInit: TTimer
-    Enabled = False
-    Interval = 5000
-    OnTimer = LevelInitTimer
-    Left = 772
-    Top = 28
   end
 end

@@ -23,7 +23,6 @@ type
   TTank = class
     direction: integer;
     DP: TDimPntArr;
-    lives: integer;
     isShotMade, isDestroyed: boolean;
 
     constructor Create(X, Y: integer);
@@ -63,7 +62,6 @@ var
 
 begin
   self.direction := 0;
-  self.lives := 3;
   self.isDestroyed := false;
   self.isShotMade := false;
   self.DP[0].X := X;
@@ -156,7 +154,7 @@ begin
       self.direction := 3;
     39, 68:
       self.direction := 1;
-    -100, 32:
+    -100, 13, 32:
       isKeyPressed := false;
   end;
   if isKeyPressed then
@@ -243,6 +241,7 @@ end;
 procedure TTank.PlayerShoot(key: integer);
 
 begin
+
   if not self.isShotMade then
   begin
     case key of

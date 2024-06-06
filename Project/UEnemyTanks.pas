@@ -24,7 +24,7 @@ type
   TDirImgArr = array [0 .. DirImgCnt - 1] of TBitMap;
 
   TEnemyTank = class
-    direction, num, lives: integer;
+    direction, num: integer;
     DP: TDimPntArr;
     isShotMade, isDestroyed: boolean;
 
@@ -76,7 +76,6 @@ var
 
 begin
   self.direction := 2;
-  self.lives := 5;
   self.isDestroyed := false;
   self.num := num;
   self.isShotMade := false;

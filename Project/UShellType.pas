@@ -206,12 +206,15 @@ begin
       begin
         if not isAbleToMove1 then
         begin
+
           case TankPxMap[PntToMov1.Y][PntToMov1.X] of
             - 1:
               begin
                 gameInterface.EnemyTank1Movement.Enabled := false;
                 gameInterface.Enemy1Shoot.Enabled := false;
                 gameInterface.EnemyTank1SetDirection.Enabled := false;
+                Enemytanks[1].isDestroyed := true;
+                GameInterface.Enemy1Respawn.Enabled := true;
                 screen.Canvas.Draw(EnemyTanks[1].DP[0].X,
                   EnemyTanks[1].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy1.Enabled := true;
@@ -224,6 +227,8 @@ begin
                 gameInterface.EnemyTank2Movement.Enabled := false;
                 gameInterface.Enemy2Shoot.Enabled := false;
                 gameInterface.EnemyTank2SetDirection.Enabled := false;
+                Enemytanks[2].isDestroyed := true;
+                GameInterface.Enemy2Respawn.Enabled := true;
                 screen.Canvas.Draw(EnemyTanks[2].DP[0].X,
                   EnemyTanks[2].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy2.Enabled := true;
@@ -236,6 +241,8 @@ begin
                 gameInterface.EnemyTank3Movement.Enabled := false;
                 gameInterface.Enemy3Shoot.Enabled := false;
                 gameInterface.EnemyTank3SetDirection.Enabled := false;
+                Enemytanks[3].isDestroyed := true;
+                GameInterface.Enemy3Respawn.Enabled := true;
                 screen.Canvas.Draw(EnemyTanks[3].DP[0].X,
                   EnemyTanks[3].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy3.Enabled := true;
@@ -248,6 +255,8 @@ begin
                 gameInterface.EnemyTank4Movement.Enabled := false;
                 gameInterface.Enemy4Shoot.Enabled := false;
                 gameInterface.EnemyTank4SetDirection.Enabled := false;
+                GameInterface.Enemy4Respawn.Enabled := true;
+                Enemytanks[4].isDestroyed := true;
                 screen.Canvas.Draw(EnemyTanks[4].DP[0].X,
                   EnemyTanks[4].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy4.Enabled := true;
@@ -265,19 +274,22 @@ begin
                 gameInterface.EnemyTank1Movement.Enabled := false;
                 gameInterface.Enemy1Shoot.Enabled := false;
                 gameInterface.EnemyTank1SetDirection.Enabled := false;
+                Enemytanks[1].isDestroyed := true;
+                GameInterface.Enemy1Respawn.Enabled := true;
                 screen.Canvas.Draw(EnemyTanks[1].DP[0].X,
                   EnemyTanks[1].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy1.Enabled := true;
                 for k := EnemyTanks[1].DP[0].X to EnemyTanks[1].DP[3].X do
                   for l := EnemyTanks[1].DP[0].Y to EnemyTanks[1].DP[3].Y do
                     TankPxMap[l][k] := 0;
-
               end;
             -2:
               begin
                 gameInterface.EnemyTank2Movement.Enabled := false;
                 gameInterface.Enemy2Shoot.Enabled := false;
                 gameInterface.EnemyTank2SetDirection.Enabled := false;
+                Enemytanks[2].isDestroyed := true;
+                GameInterface.Enemy2Respawn.Enabled := true;
                 screen.Canvas.Draw(EnemyTanks[2].DP[0].X,
                   EnemyTanks[2].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy2.Enabled := true;
@@ -290,6 +302,8 @@ begin
                 gameInterface.EnemyTank3Movement.Enabled := false;
                 gameInterface.Enemy3Shoot.Enabled := false;
                 gameInterface.EnemyTank3SetDirection.Enabled := false;
+                Enemytanks[3].isDestroyed := true;
+                GameInterface.Enemy3Respawn.Enabled := true;
                 screen.Canvas.Draw(EnemyTanks[3].DP[0].X,
                   EnemyTanks[3].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy3.Enabled := true;
@@ -302,6 +316,8 @@ begin
                 gameInterface.EnemyTank4Movement.Enabled := false;
                 gameInterface.Enemy4Shoot.Enabled := false;
                 gameInterface.EnemyTank4SetDirection.Enabled := false;
+                Enemytanks[4].isDestroyed := true;
+                GameInterface.Enemy4Respawn.Enabled := true;
                 screen.Canvas.Draw(EnemyTanks[4].DP[0].X,
                   EnemyTanks[4].DP[0].Y, ExpBig);
                 gameInterface.DeleteExpBigEnemy4.Enabled := true;
