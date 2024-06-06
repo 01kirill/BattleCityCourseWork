@@ -17,70 +17,63 @@ type
 
   TDimPntArr = array [0 .. DimPntCnt - 1] of TCoords;
 
-  TShell = class
+  TShellr = record
     direction: integer;
     DP: TDimPntArr;
     img: TBitMap;
-    constructor Create(direction, X, Y: integer);
-    procedure PlayerShellMove(screen: TImage);
   end;
 
 procedure ExpImgInit();
 
+procedure CreatePlayerShell(direction, x, y: integer);
+
+procedure MovePlayerShell(screen: TImage);
+
 var
-  PlayerShell: TShell;
+  PlayerShell: TShellr;
   ExpBig, ExpSmall: TBitMap;
 
 implementation
 
 uses UGameInterface, UGameMap, UTTankType, UEnemyTanks, UEnemyShells;
 
-procedure ExpImgInit();
+procedure CreatePlayerShell(direction, x, y: integer);
 
 begin
-  ExpBig := TBitMap.Create;
-  ExpBig.LoadFromFile('..\icons\Shell\e80.bmp');
-  ExpSmall := TBitMap.Create;
-  ExpSmall.LoadFromFile('..\icons\Shell\e40.bmp');
-end;
-
-constructor TShell.Create(direction, X, Y: integer);
-
-begin
-  self.direction := direction;
-  self.img := TBitMap.Create;
-  self.img.LoadFromFile('..\icons\Shell\s.bmp');
+  PlayerShell.direction := direction;
+  PlayerShell.img := TBitMap.Create;
+  PlayerShell.img.LoadFromFile('..\icons\Shell\s.bmp');
   case direction of
     0:
       begin
-        self.DP[0].X := X + TankSize div 2 - ShellSize div 2;
-        self.DP[0].Y := Y - ShellSize;
+        PlayerShell.DP[0].X := X + TankSize div 2 - ShellSize div 2;
+        PlayerShell.DP[0].Y := Y - ShellSize;
       end;
     1:
       begin
-        self.DP[0].X := X + TankSize;
-        self.DP[0].Y := Y + TankSize div 2 - ShellSize div 2;
+        PlayerShell.DP[0].X := X + TankSize;
+        PlayerShell.DP[0].Y := Y + TankSize div 2 - ShellSize div 2;
       end;
     2:
       begin
-        self.DP[0].X := X + TankSize div 2 - ShellSize div 2;
-        self.DP[0].Y := Y + TankSize;
+        PlayerShell.DP[0].X := X + TankSize div 2 - ShellSize div 2;
+        PlayerShell.DP[0].Y := Y + TankSize;
       end;
     3:
       begin
-        self.DP[0].X := X - ShellSize;
-        self.DP[0].Y := Y - ShellSize div 2 + TankSize div 2;
+        PlayerShell.DP[0].X := X - ShellSize;
+        PlayerShell.DP[0].Y := Y - ShellSize div 2 + TankSize div 2;
       end;
   end;
-  self.DP[1].X := self.DP[0].X + ShellSize - 1;
-  self.DP[1].Y := self.DP[0].Y;
-  self.DP[2].X := self.DP[0].X;
-  self.DP[2].Y := self.DP[0].Y + ShellSize - 1;
-  self.DP[3].X := self.DP[0].X + ShellSize - 1;
-  self.DP[3].Y := self.DP[0].Y + ShellSize - 1;
+  PlayerShell.DP[1].X := PlayerShell.DP[0].X + ShellSize - 1;
+  PlayerShell.DP[1].Y := PlayerShell.DP[0].Y;
+  PlayerShell.DP[2].X := PlayerShell.DP[0].X;
+  PlayerShell.DP[2].Y := PlayerShell.DP[0].Y + ShellSize - 1;
+  PlayerShell.DP[3].X := PlayerShell.DP[0].X + ShellSize - 1;
+  PlayerShell.DP[3].Y := PlayerShell.DP[0].Y + ShellSize - 1;
 end;
 
-procedure TShell.PlayerShellMove(screen: TImage);
+procedure MovePlayerShell(screen: TImage);
 
   function CheckBorder(direction: integer): boolean;
 
@@ -91,13 +84,13 @@ procedure TShell.PlayerShellMove(screen: TImage);
     res := false;
     case direction of
       0:
-        res := ((self.DP[0].Y > 0) and (self.DP[1].Y > 0));
+        res := ((PlayerShell.DP[0].Y > 0) and (PlayerShell.DP[1].Y > 0));
       1:
-        res := ((self.DP[1].X < MapSize - 1) and (self.DP[3].X < MapSize - 1));
+        res := ((PlayerShell.DP[1].X < MapSize - 1) and (PlayerShell.DP[3].X < MapSize - 1));
       2:
-        res := ((self.DP[2].Y < MapSize - 1) and (self.DP[3].Y < MapSize - 1));
+        res := ((PlayerShell.DP[2].Y < MapSize - 1) and (PlayerShell.DP[3].Y < MapSize - 1));
       3:
-        res := ((self.DP[0].X > 0) and (self.DP[2].X > 0));
+        res := ((PlayerShell.DP[0].X > 0) and (PlayerShell.DP[2].X > 0));
     end;
     result := res;
   end;
@@ -140,36 +133,36 @@ var
   PntToMov1, PntToMov2: TCoords;
 
 begin
-  screen.Canvas.Rectangle(self.DP[0].X, self.DP[0].Y, self.DP[3].X + 1,
-    self.DP[3].Y + 1);
-  isAbleToMove1 := CheckBorder(self.direction);
-  isAbleToMove2 := CheckBorder(self.direction);
-  case self.direction of
+  screen.Canvas.Rectangle(PlayerShell.DP[0].X, PlayerShell.DP[0].Y, PlayerShell.DP[3].X + 1,
+    PlayerShell.DP[3].Y + 1);
+  isAbleToMove1 := CheckBorder(PlayerShell.direction);
+  isAbleToMove2 := CheckBorder(PlayerShell.direction);
+  case PlayerShell.direction of
     2:
       begin
-        PntToMov1 := self.DP[0];
-        PntToMov2 := self.DP[1];
+        PntToMov1 := PlayerShell.DP[0];
+        PntToMov2 := PlayerShell.DP[1];
         dec(PntToMov1.Y);
         dec(PntToMov2.Y);
       end;
     3:
       begin
-        PntToMov1 := self.DP[1];
-        PntToMov2 := self.DP[3];
+        PntToMov1 := PlayerShell.DP[1];
+        PntToMov2 := PlayerShell.DP[3];
         inc(PntToMov1.X);
         inc(PntToMov2.X);
       end;
     0:
       begin
-        PntToMov1 := self.DP[2];
-        PntToMov2 := self.DP[3];
+        PntToMov1 := PlayerShell.DP[2];
+        PntToMov2 := PlayerShell.DP[3];
         inc(PntToMov1.Y);
         inc(PntToMov2.Y);
       end;
     1:
       begin
-        PntToMov1 := self.DP[0];
-        PntToMov2 := self.DP[2];
+        PntToMov1 := PlayerShell.DP[0];
+        PntToMov2 := PlayerShell.DP[2];
         dec(PntToMov1.X);
         dec(PntToMov2.X);
       end;
@@ -186,19 +179,19 @@ begin
       if isAbleToMove1 and isAbleToMove2 then
       begin
         for i := 0 to DimPntCnt - 1 do
-          case self.direction of
+          case PlayerShell.direction of
             0:
-              dec(self.DP[i].Y, ShellSpeed);
+              dec(PlayerShell.DP[i].Y, ShellSpeed);
             1:
-              inc(self.DP[i].X, ShellSpeed);
+              inc(PlayerShell.DP[i].X, ShellSpeed);
             2:
-              inc(self.DP[i].Y, ShellSpeed);
+              inc(PlayerShell.DP[i].Y, ShellSpeed);
             3:
-              dec(self.DP[i].X, ShellSpeed);
+              dec(PlayerShell.DP[i].X, ShellSpeed);
           end;
         for i := 0 to length(waterObj) - 1 do
           screen.Canvas.Draw(waterObj[i].X, waterObj[i].Y, StaticObjImg[7]);
-        screen.Canvas.Draw(self.DP[0].X, self.DP[0].Y, self.img);
+        screen.Canvas.Draw(PlayerShell.DP[0].X, PlayerShell.DP[0].Y, PlayerShell.img);
         for i := 0 to length(ForestObj) - 1 do
           screen.Canvas.Draw(ForestObj[i].X, ForestObj[i].Y, StaticObjImg[4]);
       end
@@ -388,6 +381,15 @@ begin
     PlayerTank.isShotMade := false;
   end;
 
+end;
+
+procedure ExpImgInit();
+
+begin
+  ExpBig := TBitMap.Create;
+  ExpBig.LoadFromFile('..\icons\Shell\e80.bmp');
+  ExpSmall := TBitMap.Create;
+  ExpSmall.LoadFromFile('..\icons\Shell\e40.bmp');
 end;
 
 end.

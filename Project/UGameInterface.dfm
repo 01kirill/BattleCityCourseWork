@@ -754,28 +754,28 @@ object GameInterface: TGameInterface
   end
   object Enemy1Shoot: TTimer
     Enabled = False
-    Interval = 600
+    Interval = 400
     OnTimer = Enemy1ShootTimer
     Left = 244
     Top = 76
   end
   object Enemy2Shoot: TTimer
     Enabled = False
-    Interval = 600
+    Interval = 400
     OnTimer = Enemy2ShootTimer
     Left = 244
     Top = 132
   end
   object Enemy3Shoot: TTimer
     Enabled = False
-    Interval = 600
+    Interval = 400
     OnTimer = Enemy3ShootTimer
     Left = 244
     Top = 188
   end
   object Enemy4Shoot: TTimer
     Enabled = False
-    Interval = 600
+    Interval = 400
     OnTimer = Enemy4ShootTimer
     Left = 244
     Top = 244

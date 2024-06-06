@@ -23,19 +23,25 @@ type
 
   TDirImgArr = array [0 .. DirImgCnt - 1] of TBitMap;
 
-  TEnemyTank = class
-    direction, num: integer;
+  TEnemyTankr = record
+    direction: integer;
     DP: TDimPntArr;
     isShotMade, isDestroyed: boolean;
 
-    constructor Create(X, Y, num: integer);
-    procedure EnemyMove(screen: TImage);
-    procedure EnemyShoot();
   end;
 
-  TEnemies = array [1 .. EnemyCount] of TEnemyTank;
+  TEnemies = array [1 .. EnemyCount] of TEnemyTankr;
 
 procedure EnemyTankImgArrInit();
+
+procedure CreateEnemyTank(X: integer; Y: integer; num: integer);
+
+procedure MoveEnemyTank(screen: TImage; num: integer);
+
+procedure ShootEnemyTank1(num: integer);
+procedure ShootEnemyTank2(num: integer);
+procedure ShootEnemyTank3(num: integer);
+procedure ShootEnemyTank4(num: integer);
 
 var
   EnemyTankImg: TDirImgArr;
@@ -47,52 +53,29 @@ implementation
 uses
   UGameInterface, UGameMap, UTTankType, UShellTYpe, UEnemyShells;
 
-procedure EnemyTankImgArrInit();
-
-var
-  i: integer;
-
-begin
-  for i := 0 to DirImgCnt - 1 do
-    EnemyTankImg[i] := TBitMap.Create;
-  EnemyTankImg[0].LoadFromFile('..\icons\EnemyTank\etUp.bmp');
-  EnemyTankImg[1].LoadFromFile('..\icons\EnemyTank\etRight.bmp');
-  EnemyTankImg[2].LoadFromFile('..\icons\EnemyTank\etDown.bmp');
-  EnemyTankImg[3].LoadFromFile('..\icons\EnemyTank\etLeft.bmp');
-  EnemyCoordsSpawn[1].X := 0;
-  EnemyCoordsSpawn[1].Y := 0;
-  EnemyCoordsSpawn[2].X := 320;
-  EnemyCoordsSpawn[2].Y := 0;
-  EnemyCoordsSpawn[3].X := 640;
-  EnemyCoordsSpawn[3].Y := 0;
-  EnemyCoordsSpawn[4].X := 960;
-  EnemyCoordsSpawn[4].Y := 0;
-end;
-
-constructor TEnemyTank.Create(X: integer; Y: integer; num: integer);
+procedure CreateEnemyTank(X: integer; Y: integer; num: integer);
 
 var
   i, j: integer;
 
 begin
-  self.direction := 2;
-  self.isDestroyed := false;
-  self.num := num;
-  self.isShotMade := false;
-  self.DP[0].X := X;
-  self.DP[0].Y := Y;
-  self.DP[1].X := X + TankSize - 1;
-  self.DP[1].Y := Y;
-  self.DP[2].X := X;
-  self.DP[2].Y := Y + TankSize - 1;
-  self.DP[3].X := X + TankSize - 1;
-  self.DP[3].Y := Y + TankSize - 1;
-  for i := self.DP[0].Y to self.DP[3].Y do
-    for j := self.DP[0].X to self.DP[3].X do
+  EnemyTanks[num].direction := 2;
+  EnemyTanks[num].isDestroyed := false;
+  EnemyTanks[num].isShotMade := false;
+  EnemyTanks[num].DP[0].X := X;
+  EnemyTanks[num].DP[0].Y := Y;
+  EnemyTanks[num].DP[1].X := X + TankSize - 1;
+  EnemyTanks[num].DP[1].Y := Y;
+  EnemyTanks[num].DP[2].X := X;
+  EnemyTanks[num].DP[2].Y := Y + TankSize - 1;
+  EnemyTanks[num].DP[3].X := X + TankSize - 1;
+  EnemyTanks[num].DP[3].Y := Y + TankSize - 1;
+  for i := EnemyTanks[num].DP[0].Y to EnemyTanks[num].DP[3].Y do
+    for j := EnemyTanks[num].DP[0].X to EnemyTanks[num].DP[3].X do
       TankPxMap[i][j] := -num;
 end;
 
-procedure TEnemyTank.EnemyMove(screen: TImage);
+procedure MoveEnemyTank(screen: TImage; num: integer);
 
   function CheckBorder(direction: integer): boolean;
 
@@ -103,13 +86,17 @@ procedure TEnemyTank.EnemyMove(screen: TImage);
     res := false;
     case direction of
       0:
-        res := ((self.DP[0].Y > 0) and (self.DP[1].Y > 0));
+        res := ((EnemyTanks[num].DP[0].Y > 0) and
+          (EnemyTanks[num].DP[1].Y > 0));
       1:
-        res := ((self.DP[1].X < MapSize - 1) and (self.DP[3].X < MapSize - 1));
+        res := ((EnemyTanks[num].DP[1].X < MapSize - 1) and
+          (EnemyTanks[num].DP[3].X < MapSize - 1));
       2:
-        res := ((self.DP[2].Y < MapSize - 1) and (self.DP[3].Y < MapSize - 1));
+        res := ((EnemyTanks[num].DP[2].Y < MapSize - 1) and
+          (EnemyTanks[num].DP[3].Y < MapSize - 1));
       3:
-        res := ((self.DP[0].X > 0) and (self.DP[2].X > 0));
+        res := ((EnemyTanks[num].DP[0].X > 0) and
+          (EnemyTanks[num].DP[2].X > 0));
     end;
     result := res;
   end;
@@ -178,20 +165,20 @@ var
 
 begin
   isAbleToMove3 := false;
-  screen.Canvas.Rectangle(self.DP[0].X, self.DP[0].Y, self.DP[3].X + 1,
-    self.DP[3].Y + 1);
-  for k := self.DP[0].Y to self.DP[3].Y do
-    for l := self.DP[0].X to self.DP[3].X do
+  screen.Canvas.Rectangle(EnemyTanks[num].DP[0].X, EnemyTanks[num].DP[0].Y,
+    EnemyTanks[num].DP[3].X + 1, EnemyTanks[num].DP[3].Y + 1);
+  for k := EnemyTanks[num].DP[0].Y to EnemyTanks[num].DP[3].Y do
+    for l := EnemyTanks[num].DP[0].X to EnemyTanks[num].DP[3].X do
       TankPxMap[k][l] := 0;
-  isAbleToMove1 := CheckBorder(self.direction);
-  isAbleToMove2 := CheckBorder(self.direction);
+  isAbleToMove1 := CheckBorder(EnemyTanks[num].direction);
+  isAbleToMove2 := CheckBorder(EnemyTanks[num].direction);
   if isAbleToMove1 and isAbleToMove2 then
   begin
-    case self.direction of
+    case EnemyTanks[num].direction of
       0:
         begin
-          PntToMov1 := self.DP[0];
-          PntToMov2 := self.DP[1];
+          PntToMov1 := EnemyTanks[num].DP[0];
+          PntToMov2 := EnemyTanks[num].DP[1];
           dec(PntToMov1.Y);
           dec(PntToMov2.Y);
           PntToMov3.X := PntToMov1.X + TankSize div 2 - 1;
@@ -199,8 +186,8 @@ begin
         end;
       1:
         begin
-          PntToMov1 := self.DP[1];
-          PntToMov2 := self.DP[3];
+          PntToMov1 := EnemyTanks[num].DP[1];
+          PntToMov2 := EnemyTanks[num].DP[3];
           inc(PntToMov1.X);
           inc(PntToMov2.X);
           PntToMov3.X := PntToMov1.X;
@@ -208,8 +195,8 @@ begin
         end;
       2:
         begin
-          PntToMov1 := self.DP[2];
-          PntToMov2 := self.DP[3];
+          PntToMov1 := EnemyTanks[num].DP[2];
+          PntToMov2 := EnemyTanks[num].DP[3];
           inc(PntToMov1.Y);
           inc(PntToMov2.Y);
           PntToMov3.X := PntToMov1.X + TankSize div 2 - 1;
@@ -217,8 +204,8 @@ begin
         end;
       3:
         begin
-          PntToMov1 := self.DP[0];
-          PntToMov2 := self.DP[2];
+          PntToMov1 := EnemyTanks[num].DP[0];
+          PntToMov2 := EnemyTanks[num].DP[2];
           dec(PntToMov1.X);
           dec(PntToMov2.X);
           PntToMov3.X := PntToMov1.X;
@@ -231,25 +218,26 @@ begin
   end;
   if isAbleToMove1 and isAbleToMove2 and isAbleToMove3 then
   begin
-    isAbleToMove1 := CheckTank(TankPxMap[PntToMov1.Y][PntToMov1.X], self.num);
-    isAbleToMove2 := CheckTank(TankPxMap[PntToMov2.Y][PntToMov2.X], self.num);
+    isAbleToMove1 := CheckTank(TankPxMap[PntToMov1.Y][PntToMov1.X], num);
+    isAbleToMove2 := CheckTank(TankPxMap[PntToMov2.Y][PntToMov2.X], num);
     if isAbleToMove1 and isAbleToMove2 then
       for i := 0 to DimPntCnt - 1 do
-        case self.direction of
+        case EnemyTanks[num].direction of
           0:
-            dec(self.DP[i].Y, eTankSpeed);
+            dec(EnemyTanks[num].DP[i].Y, eTankSpeed);
           1:
-            inc(self.DP[i].X, eTankSpeed);
+            inc(EnemyTanks[num].DP[i].X, eTankSpeed);
           2:
-            inc(self.DP[i].Y, eTankSpeed);
+            inc(EnemyTanks[num].DP[i].Y, eTankSpeed);
           3:
-            dec(self.DP[i].X, eTankSpeed);
+            dec(EnemyTanks[num].DP[i].X, eTankSpeed);
         end;
   end;
-  screen.Canvas.Draw(self.DP[0].X, self.DP[0].Y, EnemyTankImg[self.direction]);
-  for k := self.DP[0].Y to self.DP[3].Y do
-    for l := self.DP[0].X to self.DP[3].X do
-      TankPxMap[k][l] := -self.num;
+  screen.Canvas.Draw(EnemyTanks[num].DP[0].X, EnemyTanks[num].DP[0].Y,
+    EnemyTankImg[EnemyTanks[num].direction]);
+  for k := EnemyTanks[num].DP[0].Y to EnemyTanks[num].DP[3].Y do
+    for l := EnemyTanks[num].DP[0].X to EnemyTanks[num].DP[3].X do
+      TankPxMap[k][l] := -num;
 
   for i := 0 to length(ForestObj) - 1 do
     screen.Canvas.Draw(ForestObj[i].X, ForestObj[i].Y, StaticObjImg[4]);
@@ -258,49 +246,122 @@ begin
 
 end;
 
-procedure TEnemyTank.EnemyShoot();
+procedure ShootEnemyTank1(num: integer);
 
 var
   code: integer;
 
 begin
-  if not self.isShotMade then
+  if not EnemyTanks[num].isShotMade then
   begin
     code := random(2);
     case code of
       1:
-        self.isShotMade := true;
+        EnemyTanks[num].isShotMade := true;
       0:
-        self.isShotMade := false;
+        EnemyTanks[num].isShotMade := false;
     end;
-    if self.isShotMade then
-      case self.num of
-        1:
-          begin
-            EnemyShells[1] := TEnemyShell.Create(self.direction, self.DP[0].X,
-              self.DP[0].Y);
-            GameInterface.Enemy1ShellMovement.Enabled := true;
-          end;
-        2:
-          begin
-            EnemyShells[2] := TEnemyShell.Create(self.direction, self.DP[0].X,
-              self.DP[0].Y);
-            GameInterface.Enemy2ShellMovement.Enabled := true;
-          end;
-        3:
-          begin
-            EnemyShells[3] := TEnemyShell.Create(self.direction, self.DP[0].X,
-              self.DP[0].Y);
-            GameInterface.Enemy3ShellMovement.Enabled := true;
-          end;
-        4:
-          begin
-            EnemyShells[4] := TEnemyShell.Create(self.direction, self.DP[0].X,
-              self.DP[0].Y);
-            GameInterface.Enemy4ShellMovement.Enabled := true;
-          end;
-      end;
+    if EnemyTanks[num].isShotMade then
+    begin
+      CreateEnemyShell(EnemyTanks[num].direction, EnemyTanks[num].DP[0].X,
+        EnemyTanks[num].DP[0].Y, num);
+      GameInterface.Enemy1ShellMovement.Enabled := true;
+    end;
   end;
+end;
+
+procedure ShootEnemyTank2(num: integer);
+
+var
+  code: integer;
+
+begin
+  if not EnemyTanks[num].isShotMade then
+  begin
+    code := random(2);
+    case code of
+      1:
+        EnemyTanks[num].isShotMade := true;
+      0:
+        EnemyTanks[num].isShotMade := false;
+    end;
+    if EnemyTanks[num].isShotMade then
+    begin
+      CreateEnemyShell(EnemyTanks[num].direction, EnemyTanks[num].DP[0].X,
+        EnemyTanks[num].DP[0].Y, num);
+      GameInterface.Enemy2ShellMovement.Enabled := true;
+    end;
+  end;
+end;
+
+procedure ShootEnemyTank3(num: integer);
+
+var
+  code: integer;
+
+begin
+  if not EnemyTanks[num].isShotMade then
+  begin
+    code := random(2);
+    case code of
+      1:
+        EnemyTanks[num].isShotMade := true;
+      0:
+        EnemyTanks[num].isShotMade := false;
+    end;
+    if EnemyTanks[num].isShotMade then
+    begin
+      CreateEnemyShell(EnemyTanks[num].direction, EnemyTanks[num].DP[0].X,
+        EnemyTanks[num].DP[0].Y, num);
+      GameInterface.Enemy3ShellMovement.Enabled := true;
+    end;
+  end;
+end;
+
+procedure ShootEnemyTank4(num: integer);
+
+var
+  code: integer;
+
+begin
+  if not EnemyTanks[num].isShotMade then
+  begin
+    code := random(2);
+    case code of
+      1:
+        EnemyTanks[num].isShotMade := true;
+      0:
+        EnemyTanks[num].isShotMade := false;
+    end;
+    if EnemyTanks[num].isShotMade then
+    begin
+      CreateEnemyShell(EnemyTanks[num].direction, EnemyTanks[num].DP[0].X,
+        EnemyTanks[num].DP[0].Y, num);
+      GameInterface.Enemy4ShellMovement.Enabled := true;
+    end;
+  end;
+end;
+
+procedure EnemyTankImgArrInit();
+
+var
+  i: integer;
+
+begin
+  for i := 0 to DirImgCnt - 1 do
+    EnemyTankImg[i] := TBitMap.Create;
+  EnemyTankImg[0].LoadFromFile('..\icons\EnemyTank\etUp.bmp');
+  EnemyTankImg[1].LoadFromFile('..\icons\EnemyTank\etRight.bmp');
+  EnemyTankImg[2].LoadFromFile('..\icons\EnemyTank\etDown.bmp');
+  EnemyTankImg[3].LoadFromFile('..\icons\EnemyTank\etLeft.bmp');
+  EnemyCoordsSpawn[1].X := 0;
+  EnemyCoordsSpawn[1].Y := 0;
+  EnemyCoordsSpawn[2].X := 320;
+  EnemyCoordsSpawn[2].Y := 0;
+  EnemyCoordsSpawn[3].X := 640;
+  EnemyCoordsSpawn[3].Y := 0;
+  EnemyCoordsSpawn[4].X := 960;
+  EnemyCoordsSpawn[4].Y := 0;
 end;
 
 end.
