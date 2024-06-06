@@ -10,9 +10,9 @@ zzbbzzbbzzbbzzbbzzbbzzbbzz
 zzbbzzbbzzzzzzzzzzbbzzbbzz
 zzbbzzbbzzzzzzzzzzbbzzbbzz
 zzzzzzzzzzbbzzbbzzzzzzzzzz
-zzzzzzzzzzbbffbbzzzzzzzzzz
-bbzzbbbbzzzzffzzzzbbbbzzbb
-sswwbbbbzzzzzzzzzzbbbbzzss
+zzzzzzzzzzbbzzbbzzzzzzzzzz
+bbzzbbbbzzzzzzzzzzbbbbzzbb
+sszzbbbbzzzzzzzzzzbbbbzzss
 zzzzzzzzzzbbzzbbzzzzzzzzzz
 zzzzzzzzzzbbbbbbzzzzzzzzzz
 zzbbzzbbzzbbbbbbzzbbzzbbzz
@@ -21,6 +21,6 @@ zzbbzzbbzzbbzzbbzzbbzzbbzz
 zzbbzzbbzzbbzzbbzzbbzzbbzz
 zzbbzzbbzzzzzzzzzzbbzzbbzz
 zzbbzzbbzzzzzzzzzzbbzzbbzz
-zzbbzzbbzzzsssszzzbbzzbbzz
-zzzzzzzzzzzsezszzzzzzzzzzz
-zzzzzzzzzzzszzszzzzzzzzzzz
+zzbbzzbbzzzbbbbzzzbbzzbbzz
+zzzzzzzzzzzbezbzzzzzzzzzzz
+zzzzzzzzzzzbzzbzzzzzzzzzzz

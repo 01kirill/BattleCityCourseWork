@@ -114,6 +114,10 @@
             <Form>MainMenu</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="ULeadersTable.pas">
+            <Form>LeadersTable</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

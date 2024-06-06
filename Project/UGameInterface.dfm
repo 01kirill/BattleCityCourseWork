@@ -1,9 +1,10 @@
 object GameInterface: TGameInterface
   Left = 0
   Top = 0
+  BorderStyle = bsToolWindow
   Caption = 'BattleCity'
-  ClientHeight = 870
-  ClientWidth = 1150
+  ClientHeight = 881
+  ClientWidth = 1154
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -319,14 +320,16 @@ object GameInterface: TGameInterface
     FFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFF
     FE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00}
   Position = poDesigned
+  Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnKeyDown = FormKeyDown
   TextHeight = 15
   object PaddingPanelUp: TPanel
     Left = 0
     Top = 0
-    Width = 1150
+    Width = 1154
     Height = 20
     Align = alTop
     BevelOuter = bvNone
@@ -339,7 +342,7 @@ object GameInterface: TGameInterface
     Left = 0
     Top = 20
     Width = 20
-    Height = 830
+    Height = 841
     Align = alLeft
     BevelOuter = bvNone
     Color = clGray
@@ -349,8 +352,8 @@ object GameInterface: TGameInterface
   end
   object PaddingPanelBottom: TPanel
     Left = 0
-    Top = 850
-    Width = 1150
+    Top = 861
+    Width = 1154
     Height = 20
     Align = alBottom
     BevelOuter = bvNone
@@ -363,8 +366,8 @@ object GameInterface: TGameInterface
   object GameInfo: TPanel
     Left = 20
     Top = 20
-    Width = 1130
-    Height = 830
+    Width = 1134
+    Height = 841
     Align = alClient
     BevelOuter = bvNone
     Color = clGray

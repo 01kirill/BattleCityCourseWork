@@ -115,6 +115,7 @@ type
     procedure LevelInitTimer(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   end;
 
   TParam = record
@@ -141,7 +142,7 @@ implementation
 procedure TGameInterface.FormActivate(Sender: TObject);
 begin
   randomize;
-
+  
   self.GameScreen.Canvas.Brush.Color := clblack;
   self.GameScreen.Canvas.Pen.Color := clblack;
   self.GameScreen.Height := MapSize;
@@ -167,8 +168,16 @@ end;
 
 procedure TGameInterface.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  GameInterface.Hide;
+  EndGame(Sender, false);
+  self.WinLabel.Visible := false;
+  self.Destroy;
   MainMenu.Show;
+end;
+
+procedure TGameInterface.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  if MessageDlg('Вы уверены, что хотите выйти?', mtConfirmation, [mbOk, mbCancel], 0) = mrCancel then
+    CanClose := false;
 end;
 
 procedure TGameInterface.FormKeyDown(Sender: TObject; var Key: Word;
@@ -278,9 +287,9 @@ begin
   if win then
   begin
     inc(currentLevel);
-    if currentLevel = 3 then
+    if currentLevel = 6 then
     begin
-      inc(PlayerScore, 5000);
+      inc(PlayerScore, 6000);
       GameScreen.Canvas.Rectangle(0, 0, MapSize, MapSize);
       self.WinLabel.Caption := 'Спасибо за прохождение игры!';
       self.WinLabel.Visible := true;

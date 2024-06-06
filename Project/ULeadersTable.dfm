@@ -1,10 +1,10 @@
-object MainMenu: TMainMenu
+object LeadersTable: TLeadersTable
   Left = 342
-  Top = 247
+  Top = 214
   BorderStyle = bsToolWindow
   Caption = 'BattleCity'
-  ClientHeight = 654
-  ClientWidth = 911
+  ClientHeight = 682
+  ClientWidth = 540
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -319,131 +319,99 @@ object MainMenu: TMainMenu
     FFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFF
     FE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00}
   Position = poDesigned
+  Visible = True
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   TextHeight = 15
-  object MenuPanel: TPanel
+  object LeadsDespription: TPanel
     Left = 0
     Top = 0
-    Width = 911
-    Height = 654
-    Align = alClient
+    Width = 540
+    Height = 81
+    Align = alTop
     BevelOuter = bvNone
+    Caption = #1058#1072#1073#1083#1080#1094#1072' '#1083#1080#1076#1077#1088#1086#1074
     Color = clBackground
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -50
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
     ParentBackground = False
+    ParentFont = False
     TabOrder = 0
-    ExplicitLeft = -8
-    ExplicitTop = -5
-    object CaptionPanel: TPanel
-      Left = 16
-      Top = 24
-      Width = 881
-      Height = 97
-      BevelOuter = bvSpace
-      Color = clBlack
-      ParentBackground = False
-      TabOrder = 0
-      object GameName: TLabel
-        Left = 1
-        Top = 1
-        Width = 879
-        Height = 95
-        Align = alClient
-        Alignment = taCenter
-        Caption = 'BattleCity Remake(developed by KZ)'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clYellow
-        Font.Height = -50
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
-        OnClick = GameNameClick
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 860
-        ExplicitHeight = 67
-      end
-    end
-    object StartGameButton: TPanel
-      Left = 216
-      Top = 160
-      Width = 473
-      Height = 73
-      BevelOuter = bvSpace
-      Color = clBackground
-      ParentBackground = False
-      TabOrder = 1
-      object StartGameCaption: TLabel
-        Left = 1
-        Top = 1
-        Width = 471
-        Height = 71
-        Align = alClient
-        Alignment = taCenter
-        Caption = #1053#1072#1095#1072#1090#1100' '#1080#1075#1088#1091
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clYellow
-        Font.Height = -50
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
-        OnClick = StartGameCaptionClick
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 297
-        ExplicitHeight = 67
-      end
-    end
-    object ControlsDescription: TPanel
-      Left = 217
-      Top = 489
-      Width = 472
-      Height = 72
-      BevelOuter = bvSpace
-      Caption = #1051#1077#1075#1077#1085#1076#1072' '#1091#1087#1088#1072#1074#1083#1077#1085#1080#1103
-      Color = clCaptionText
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -42
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 2
-      OnClick = ControlsDescriptionClick
-    end
-    object LeadsTable: TPanel
-      Left = 215
-      Top = 379
-      Width = 473
-      Height = 72
-      BevelOuter = bvSpace
-      Caption = #1058#1072#1073#1083#1080#1094#1072' '#1083#1080#1076#1077#1088#1086#1074
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -50
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-      TabOrder = 3
-      OnClick = LeadsTableClick
-    end
-    object Authentication: TPanel
-      Left = 217
-      Top = 267
-      Width = 473
-      Height = 72
-      BevelOuter = bvSpace
-      Caption = #1040#1074#1090#1086#1088#1080#1079#1072#1094#1080#1103
-      Color = clBtnText
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -50
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 4
-    end
+    ExplicitWidth = 851
+  end
+  object NameDesc: TPanel
+    Left = 0
+    Top = 79
+    Width = 270
+    Height = 41
+    Caption = #1053#1080#1082#1085#1077#1081#1084
+    Color = clBackground
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -25
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 1
+  end
+  object ScoreDesc: TPanel
+    Left = 276
+    Top = 79
+    Width = 264
+    Height = 41
+    Caption = #1047#1072#1088#1072#1073#1086#1090#1072#1085#1085#1099#1077' '#1086#1095#1082#1080
+    Color = clBackground
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -25
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 2
+  end
+  object BuffPanel: TPanel
+    Left = 264
+    Top = 79
+    Width = 17
+    Height = 605
+    BevelOuter = bvSpace
+    Color = clCaptionText
+    ParentBackground = False
+    TabOrder = 3
+  end
+  object ListBox1: TListBox
+    Left = 0
+    Top = 120
+    Width = 265
+    Height = 561
+    Color = clNone
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ItemHeight = 15
+    ParentFont = False
+    TabOrder = 4
+  end
+  object ListBox2: TListBox
+    Left = 280
+    Top = 120
+    Width = 259
+    Height = 561
+    Color = clNone
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ItemHeight = 15
+    ParentFont = False
+    TabOrder = 5
   end
 end
