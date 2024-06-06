@@ -118,6 +118,11 @@
             <Form>LeadersTable</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UAuthentication.pas">
+            <Form>Auth</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UFileRouthine.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

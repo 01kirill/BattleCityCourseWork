@@ -323,7 +323,6 @@ object GameInterface: TGameInterface
   Visible = True
   OnActivate = FormActivate
   OnClose = FormClose
-  OnCloseQuery = FormCloseQuery
   OnKeyDown = FormKeyDown
   TextHeight = 15
   object PaddingPanelUp: TPanel

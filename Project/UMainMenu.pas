@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  UFileRouthine;
 
 type
   TMainMenu = class(TForm)
@@ -23,28 +24,34 @@ type
     procedure GameNameClick(Sender: TObject);
     procedure ControlsDescriptionClick(Sender: TObject);
     procedure LeadsTableClick(Sender: TObject);
-
+    procedure AuthenticationClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   end;
 
 var
   MainMenu: TMainMenu;
   isAuthorised: Boolean;
+  isReaded: Boolean = false;
 
 implementation
 
 {$R *.dfm}
 
 uses
-  UGameInterface, ULeadersTable;
+  UGameInterface, ULeadersTable, UAuthentication;
 
-procedure TMainMenu.ControlsDescriptionClick(Sender: TObject);
+procedure TMainMenu.FormActivate(Sender: TObject);
 begin
-  ShowMessage
-    ('Для передвижения танка можно использовать клавиши w\a\s\d, или стрелки. Для стрельбы нужно использовать пробел.')
+  if not isReaded then
+  begin
+    ReadUsersData();
+    isReaded := true;
+  end;
 end;
 
 procedure TMainMenu.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  SaveData();
   MainMenu.Destroy;
 end;
 
@@ -61,21 +68,35 @@ begin
     ('Программное средство было разработано студентом первого курса ПИ 2023/2024 - Кириллом Зиновенко.');
 end;
 
-procedure TMainMenu.LeadsTableClick(Sender: TObject);
-begin
-  LeadersTable := TLeadersTable.Create(Owner);
-  MainMenu.Hide;
-end;
-
 procedure TMainMenu.StartGameCaptionClick(Sender: TObject);
 begin
+
   if isAuthorised then
   begin
     GameInterface := TGameInterface.Create(Owner);
-    MainMenu.Hide;
+    // MainMenu.Hide;
   end
   else
     ShowMessage('Для начала игры необходимо авторизоваться.');
+
+end;
+
+procedure TMainMenu.AuthenticationClick(Sender: TObject);
+begin
+  Auth := TAuth.Create(Owner);
+  // MainMenu.Hide;
+end;
+
+procedure TMainMenu.LeadsTableClick(Sender: TObject);
+begin
+  LeadersTable := TLeadersTable.Create(Owner);
+  // MainMenu.Hide;
+end;
+
+procedure TMainMenu.ControlsDescriptionClick(Sender: TObject);
+begin
+  ShowMessage
+    ('Для передвижения танка можно использовать клавиши w\a\s\d, или стрелки. Для стрельбы нужно использовать пробел.')
 end;
 
 end.

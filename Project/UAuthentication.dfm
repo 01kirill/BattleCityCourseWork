@@ -1,10 +1,10 @@
-object MainMenu: TMainMenu
-  Left = 342
+object Auth: TAuth
+  Left = 358
   Top = 247
   BorderStyle = bsToolWindow
   Caption = 'BattleCity'
-  ClientHeight = 654
-  ClientWidth = 911
+  ClientHeight = 453
+  ClientWidth = 632
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -319,129 +319,89 @@ object MainMenu: TMainMenu
     FFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFF
     FE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00}
   Position = poDesigned
-  OnActivate = FormActivate
+  Visible = True
   OnClose = FormClose
-  OnCloseQuery = FormCloseQuery
   TextHeight = 15
-  object MenuPanel: TPanel
+  object AuthPanel: TPanel
     Left = 0
     Top = 0
-    Width = 911
-    Height = 654
+    Width = 632
+    Height = 453
     Align = alClient
     BevelOuter = bvNone
-    Color = clBackground
+    Color = clInactiveCaptionText
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 901
-    ExplicitHeight = 634
-    object CaptionPanel: TPanel
-      Left = 16
-      Top = 24
-      Width = 881
-      Height = 97
-      BevelOuter = bvSpace
-      Color = clBlack
-      ParentBackground = False
-      TabOrder = 0
-      object GameName: TLabel
-        Left = 1
-        Top = 1
-        Width = 879
-        Height = 95
-        Align = alClient
-        Alignment = taCenter
-        Caption = 'BattleCity Remake(developed by KZ)'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clYellow
-        Font.Height = -50
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
-        OnClick = GameNameClick
-        ExplicitWidth = 860
-        ExplicitHeight = 67
-      end
-    end
-    object StartGameButton: TPanel
-      Left = 216
-      Top = 160
-      Width = 473
-      Height = 73
-      BevelOuter = bvSpace
-      Color = clBackground
-      ParentBackground = False
-      TabOrder = 1
-      object StartGameCaption: TLabel
-        Left = 1
-        Top = 1
-        Width = 471
-        Height = 71
-        Align = alClient
-        Alignment = taCenter
-        Caption = #1053#1072#1095#1072#1090#1100' '#1080#1075#1088#1091
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clYellow
-        Font.Height = -50
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
-        OnClick = StartGameCaptionClick
-        ExplicitWidth = 297
-        ExplicitHeight = 67
-      end
-    end
-    object ControlsDescription: TPanel
-      Left = 217
-      Top = 489
-      Width = 472
-      Height = 72
-      BevelOuter = bvSpace
-      Caption = #1051#1077#1075#1077#1085#1076#1072' '#1091#1087#1088#1072#1074#1083#1077#1085#1080#1103
-      Color = clCaptionText
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
-      Font.Height = -42
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 2
-      OnClick = ControlsDescriptionClick
-    end
-    object LeadsTable: TPanel
-      Left = 215
-      Top = 379
-      Width = 473
-      Height = 72
-      BevelOuter = bvSpace
-      Caption = #1058#1072#1073#1083#1080#1094#1072' '#1083#1080#1076#1077#1088#1086#1074
+    ExplicitWidth = 622
+    ExplicitHeight = 433
+    object AuthDesc: TLabel
+      Left = 88
+      Top = 0
+      Width = 459
+      Height = 67
+      Caption = #1054#1082#1085#1086' '#1072#1074#1090#1086#1088#1080#1079#1072#1094#1080#1080
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clYellow
       Font.Height = -50
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 3
-      OnClick = LeadsTableClick
     end
-    object Authentication: TPanel
-      Left = 217
-      Top = 267
-      Width = 473
-      Height = 72
+    object NickNameDesc: TLabel
+      Left = 88
+      Top = 96
+      Width = 158
+      Height = 45
+      Caption = #1053#1080#1082#1085#1077#1081#1084':'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clYellow
+      Font.Height = -33
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object PassWordDesc: TLabel
+      Left = 88
+      Top = 195
+      Width = 130
+      Height = 45
+      Caption = #1055#1072#1088#1086#1083#1100':'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clYellow
+      Font.Height = -33
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object NickNameEnter: TEdit
+      Left = 88
+      Top = 147
+      Width = 257
+      Height = 23
+      TabOrder = 0
+    end
+    object PasswordEnter: TEdit
+      Left = 88
+      Top = 246
+      Width = 257
+      Height = 23
+      TabOrder = 1
+    end
+    object Confirm: TPanel
+      Left = 160
+      Top = 344
+      Width = 321
+      Height = 41
       BevelOuter = bvSpace
       Caption = #1040#1074#1090#1086#1088#1080#1079#1072#1094#1080#1103
-      Color = clBtnText
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clYellow
-      Font.Height = -50
+      Font.Height = -25
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
-      ParentBackground = False
       ParentFont = False
-      TabOrder = 4
-      OnClick = AuthenticationClick
+      TabOrder = 2
+      OnClick = ConfirmClick
     end
   end
 end

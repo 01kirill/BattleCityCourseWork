@@ -320,8 +320,8 @@ object LeadersTable: TLeadersTable
     FE00FFFFFFFE0000007FFFFFFE00FFFFFFFE0000007FFFFFFE00}
   Position = poDesigned
   Visible = True
+  OnActivate = FormActivate
   OnClose = FormClose
-  OnCloseQuery = FormCloseQuery
   TextHeight = 15
   object LeadsDespription: TPanel
     Left = 0
@@ -340,7 +340,7 @@ object LeadersTable: TLeadersTable
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 851
+    ExplicitWidth = 530
   end
   object NameDesc: TPanel
     Left = 0
@@ -392,10 +392,10 @@ object LeadersTable: TLeadersTable
     Color = clNone
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clYellow
-    Font.Height = -12
+    Font.Height = -25
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ItemHeight = 15
+    ItemHeight = 35
     ParentFont = False
     TabOrder = 4
   end
@@ -407,10 +407,10 @@ object LeadersTable: TLeadersTable
     Color = clNone
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clYellow
-    Font.Height = -12
+    Font.Height = -25
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ItemHeight = 15
+    ItemHeight = 35
     ParentFont = False
     TabOrder = 5
   end
